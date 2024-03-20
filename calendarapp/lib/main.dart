@@ -64,6 +64,8 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
+    DateTime today = DateTime.now();
+
     // This method is rerun every time setState is called, for instance as done
     // by the _incrementCounter method above.
     //
@@ -96,15 +98,20 @@ class _MyHomePageState extends State<MyHomePage> {
           // horizontal).
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            const Text(
-              'You have pushed the button this many times:',
-            ),
             Text(
-              '$_counter',
+              "Selected Day = " + today.toString().split(" ")[0],
               style: Theme.of(context).textTheme.headlineMedium,
             ),
             TableCalendar(
-                focusedDay: focusedDay, firstDay: firstDay, lastDay: lastDay)
+              locale: 'en_US',
+              rowHeight: 50,
+              headerStyle: const HeaderStyle(
+                  formatButtonVisible: false, titleCentered: true),
+              availableGestures: AvailableGestures.all,
+              focusedDay: today,
+              firstDay: DateTime.utc(2010, 12, 30),
+              lastDay: DateTime.utc(2030, 12, 30),
+            )
           ],
         ),
       ),
