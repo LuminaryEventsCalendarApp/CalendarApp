@@ -131,8 +131,8 @@ class _MyHomePageState extends State<MyHomePage> {
       body: Column(
         children: [
           TableCalendar<Event>(
-            firstDay: DateTime.utc(2010, 12, 30),
-            lastDay: DateTime.utc(2030, 12, 30),
+            firstDay: kFirstDay,
+            lastDay: kLastDay,
             focusedDay: _focusedDay,
             selectedDayPredicate: (day) {
               // Use `selectedDayPredicate` to determine which day is currently selected.
@@ -165,6 +165,15 @@ class _MyHomePageState extends State<MyHomePage> {
             onPageChanged: (focusedDay) {
               _focusedDay = focusedDay;
             },
+          ),
+          const Padding(
+            padding: EdgeInsets.symmetric(horizontal: 8, vertical: 10),
+            child: TextField(
+              decoration: InputDecoration(
+                border: OutlineInputBorder(),
+                hintText: 'Enter a event',
+              ),
+            ),
           ),
           const SizedBox(height: 8.0),
           Expanded(
