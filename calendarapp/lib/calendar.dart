@@ -1,6 +1,9 @@
+import 'package:calendarapp/settings.dart';
 import 'package:flutter/material.dart';
 import 'package:table_calendar/table_calendar.dart';
 import 'package:side_navigation/side_navigation.dart';
+import 'settings.dart';
+import 'inventory.dart';
 
 import '../utils.dart';
 
@@ -105,10 +108,10 @@ class _CalendarState extends State<Calendar> {
           children: [
             DrawerHeader(
               decoration: BoxDecoration(
-                color: Colors.blue,
+                color: const Color.fromARGB(255, 0, 0, 0),
               ),
               child: Text(
-                'Menu',
+                'Navigointi',
                 style: TextStyle(
                   color: Colors.white,
                   fontSize: 24,
@@ -118,18 +121,31 @@ class _CalendarState extends State<Calendar> {
             ListTile(
               title: Text('Kalenteri'),
               onTap: () {
+                 Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => Calendar()),
+          );
                 // Add navigation logic for option 1 here
               },
             ),
             ListTile(
               title: Text('Tavaraluettelo'),
               onTap: () {
+                 Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => Inventory()),
+          );
                 // Add navigation logic for option 2 here
               },
             ),
             ListTile(
               title: Text('Asetukset'),
               onTap: () {
+                 Navigator.pop(context);
+                 Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => Settings()),
+          );
                 // Add navigation logic for option 1 here
               },
             ),
