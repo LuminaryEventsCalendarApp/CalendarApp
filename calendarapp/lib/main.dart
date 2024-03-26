@@ -1,6 +1,8 @@
-// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
+// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, dead_code
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:table_calendar/table_calendar.dart';
 import 'utils.dart';
 
@@ -102,6 +104,7 @@ class _MyHomePageState extends State<MyHomePage> {
   Widget build(BuildContext context) {
     final List<Widget> nextSevenDaysEvents = [];
 
+    // ignore: unused_local_variable
     final DateTime nextWeek = kToday.add(const Duration(days: 7));
     for (int i = 0; i < 7; i++) {
       final DateTime day = kToday.add(Duration(days: i));
@@ -113,13 +116,26 @@ class _MyHomePageState extends State<MyHomePage> {
             style: TextStyle(fontWeight: FontWeight.bold),
           ),
         );
-        for (final event in eventsForDay) {
-          nextSevenDaysEvents.add(
-            Text('- ${event.title}'),
-          );
-        }
-      }
-    }
+      for (final event in eventsForDay) {
+         nextSevenDaysEvents.add(
+         ElevatedButton(
+          onPressed: () {
+      },
+      style: ButtonStyle(
+        shape: MaterialStateProperty.all(
+          RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(5), // Adjust the radius as needed
+          ),
+        ),
+        padding: MaterialStateProperty.all(
+          EdgeInsets.symmetric(vertical: 5, horizontal: 8), // Adjust padding for size
+        ),
+        backgroundColor: MaterialStateProperty.all(Colors.white), // Set button background color
+      ),
+      child: Text(event.title),
+    ),
+  );
+}}}
 
     return Scaffold(
       appBar: AppBar(
