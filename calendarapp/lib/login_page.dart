@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'components/my_textfield.dart';
 import 'components/my_button.dart';
@@ -5,10 +6,15 @@ import 'components/my_button.dart';
 class LoginPage extends StatelessWidget {
   LoginPage({super.key});
 
-  final usernameController = TextEditingController();
+  final emailController = TextEditingController();
   final passwordController = TextEditingController();
 
-  void signIn() {}
+  void signUserIn() async {
+    await FirebaseAuth.instance.signInWithEmailAndPassword(
+      email: emailController.text,
+      password: passwordController.text,
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -31,7 +37,7 @@ class LoginPage extends StatelessWidget {
 
               //username
               MyTextField(
-                controller: usernameController,
+                controller: emailController,
                 hintText: 'Username',
                 obscureText: false,
               ),
@@ -46,7 +52,13 @@ class LoginPage extends StatelessWidget {
               ),
 
               //sign in button
-              MyButton(onTap: signIn),
+              MyButton(onTap: signUserIn),
+              const SizedBox(height: 50),
+
+              MyButton(
+                onTap: signUserIn,
+              ),
+
               const SizedBox(height: 50),
             ],
           ),

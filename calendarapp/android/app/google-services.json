@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "998798671782",
+    "project_id": "luminaryevents-888f3",
+    "storage_bucket": "luminaryevents-888f3.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:998798671782:android:3e80e9f39196d1ede55967",
+        "android_client_info": {
+          "package_name": "com.example.calendarapp"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD8Jf2c-VwNDg2UyX5QQ44nWRwOr-OASKU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
