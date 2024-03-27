@@ -1,4 +1,4 @@
-// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, dead_code
+// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, dead_code, unnecessary_import, unused_local_variable
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -104,7 +104,6 @@ class _MyHomePageState extends State<MyHomePage> {
   Widget build(BuildContext context) {
     final List<Widget> nextSevenDaysEvents = [];
 
-    // ignore: unused_local_variable
     final DateTime nextWeek = kToday.add(const Duration(days: 7));
     for (int i = 0; i < 7; i++) {
       final DateTime day = kToday.add(Duration(days: i));
@@ -116,26 +115,61 @@ class _MyHomePageState extends State<MyHomePage> {
             style: TextStyle(fontWeight: FontWeight.bold),
           ),
         );
-      for (final event in eventsForDay) {
-         nextSevenDaysEvents.add(
-         ElevatedButton(
-          onPressed: () {
-      },
-      style: ButtonStyle(
-        shape: MaterialStateProperty.all(
-          RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(5), // Adjust the radius as needed
-          ),
-        ),
-        padding: MaterialStateProperty.all(
-          EdgeInsets.symmetric(vertical: 5, horizontal: 8), // Adjust padding for size
-        ),
-        backgroundColor: MaterialStateProperty.all(Colors.white), // Set button background color
-      ),
-      child: Text(event.title),
-    ),
-  );
-}}}
+        for (final event in eventsForDay) {
+          nextSevenDaysEvents.add(
+            GestureDetector(
+              onTap: () {
+                showDialog(
+                  context: context,
+                  builder: (BuildContext context) {
+                    return AlertDialog(
+                      title: Text('Tapahtuman tiedot ${day.day}/${day.month}'),
+                      content: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Text('Tarvittavat paketit tapahtumaan: ${event.title}'),
+                          SizedBox(height: 16),
+                          Text(
+                            'Paketti',
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                            ),                           
+                            ), 
+                        ],
+                      ),
+                      actions: <Widget>[
+                        TextButton(
+                          onPressed: () {
+                            Navigator.of(context).pop();
+                          },
+                          child: Text('Sulje'),
+                        ),
+                      ],
+                    );
+                  },
+                );
+              },
+              child: ElevatedButton(
+                onPressed: null,
+                style: ButtonStyle(
+                  shape: MaterialStateProperty.all(
+                    RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(5),
+                    ),
+                  ),
+                  padding: MaterialStateProperty.all(
+                    EdgeInsets.symmetric(vertical: 5, horizontal: 8),
+                  ),
+                  backgroundColor: MaterialStateProperty.all(Colors.white),
+                ),
+                child: Text(event.title),
+              ),
+            ),
+          );
+        }
+      }
+    }
 
     return Scaffold(
       appBar: AppBar(
@@ -216,6 +250,7 @@ class _MyHomePageState extends State<MyHomePage> {
               ...nextSevenDaysEvents,
             ],
           ),
+       
         ],
       ),
     );
@@ -228,8 +263,6 @@ class _MyHomePageState extends State<MyHomePage> {
       kEvents[selectedDate] = [Event(_enteredText)];
     }
 
-    setState(() {
-      _enteredText = '';
-    });
+    setState(() {});
   }
 }
