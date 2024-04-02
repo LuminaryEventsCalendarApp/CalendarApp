@@ -21,46 +21,45 @@ class LoginPage extends StatelessWidget {
     return Scaffold(
       backgroundColor: Colors.grey[300],
       body: SafeArea(
-        child: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              const SizedBox(height: 50),
+        child: SingleChildScrollView(
+          child: Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                const SizedBox(height: 50),
 
-              //logo
-              const Icon(
-                Icons.lock,
-                size: 100,
-              ),
+                //logo
+                const Icon(
+                  Icons.lock,
+                  size: 100,
+                ),
 
-              const SizedBox(height: 50),
+                const SizedBox(height: 50),
 
-              //username
-              MyTextField(
-                controller: emailController,
-                hintText: 'Username',
-                obscureText: false,
-              ),
+                //username
+                MyTextField(
+                  controller: emailController,
+                  hintText: 'Username',
+                  obscureText: false,
+                ),
 
-              //const SizedBox(height: 10),
+                //const SizedBox(height: 10),
 
-              //password
-              MyTextField(
-                controller: passwordController,
-                hintText: 'Password',
-                obscureText: true,
-              ),
+                //password
+                MyTextField(
+                  controller: passwordController,
+                  hintText: 'Password',
+                  obscureText: true,
+                ),
 
-              //sign in button
-              MyButton(onTap: signUserIn),
-              const SizedBox(height: 50),
+                //sign in button
+                MyButton(
+                  onTap: signUserIn,
+                ),
 
-              MyButton(
-                onTap: signUserIn,
-              ),
-
-              const SizedBox(height: 50),
-            ],
+                const SizedBox(height: 50),
+              ],
+            ),
           ),
         ),
       ),

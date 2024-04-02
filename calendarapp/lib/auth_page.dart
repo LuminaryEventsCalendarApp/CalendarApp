@@ -1,3 +1,4 @@
+//import 'package:calendarapp/calendar.dart';
 import 'package:calendarapp/login_page.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -10,19 +11,19 @@ class AuthPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       body: StreamBuilder<User?>(
-          stream: FirebaseAuth.instance.authStateChanges(),
-          builder: (context, snapshot) {
-            //logged in
-            if (snapshot.hasData) {
-              return HomePage();
-            }
+        stream: FirebaseAuth.instance.authStateChanges(),
+        builder: (context, snapshot) {
+          //logged in
+          if (snapshot.hasData) {
+            return const HomePage();
+          }
 
-            //not logged in
-            else {
-              return LoginPage();
-            }
-          },
-          ),
+          //not logged in
+          else {
+            return LoginPage();
+          }
+        },
+      ),
     );
   }
 }
