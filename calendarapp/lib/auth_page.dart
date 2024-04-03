@@ -1,4 +1,7 @@
 //import 'package:calendarapp/calendar.dart';
+import 'dart:html';
+
+import 'package:calendarapp/calendar.dart';
 import 'package:calendarapp/login_page.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -15,7 +18,7 @@ class AuthPage extends StatelessWidget {
         builder: (context, snapshot) {
           //logged in
           if (snapshot.hasData) {
-            return const HomePage();
+            return const Calendar();
           }
 
           //not logged in
