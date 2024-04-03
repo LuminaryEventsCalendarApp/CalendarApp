@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:table_calendar/table_calendar.dart';
+import 'package:side_navigation/side_navigation.dart';
+import 'settings.dart';
+import 'inventory.dart';
 
 import '../utils.dart';
 
@@ -19,6 +22,17 @@ class _CalendarState extends State<Calendar> {
   DateTime? _selectedDay;
   DateTime? _rangeStart;
   DateTime? _rangeEnd;
+  List<Widget> views = const [
+    Center(
+      child: Text('Dashboard'),
+    ),
+    Center(
+      child: Text('Account'),
+    ),
+    Center(
+      child: Text('Settings'),
+    ),
+  ];
 
   @override
   void initState() {
@@ -86,6 +100,57 @@ class _CalendarState extends State<Calendar> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('TableCalendar - Events'),
+      ),
+      drawer: Drawer(
+        child: ListView(
+          padding: EdgeInsets.zero,
+          children: [
+            const DrawerHeader(
+              decoration: BoxDecoration(
+                color: Color.fromARGB(255, 0, 0, 0),
+              ),
+              child: Text(
+                'Navigointi',
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 24,
+                ),
+              ),
+            ),
+            ListTile(
+              title: const Text('Kalenteri'),
+              onTap: () {
+                 Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => Calendar()),
+          );
+                // Add navigation logic for option 1 here
+              },
+            ),
+            ListTile(
+              title: const Text('Tavaraluettelo'),
+              onTap: () {
+                 Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => const Inventory()),
+          );
+                // Add navigation logic for option 2 here
+              },
+            ),
+            ListTile(
+              title: const Text('Asetukset'),
+              onTap: () {
+                 Navigator.pop(context);
+                 Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => const Settings()),
+          );
+                // Add navigation logic for option 1 here
+              },
+            ),
+            // Add more options as needed
+          ],
+        ),
       ),
       body: Column(
         children: [
