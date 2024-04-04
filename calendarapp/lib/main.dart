@@ -1,3 +1,4 @@
+
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, dead_code, unnecessary_import, unused_local_variable
 
 import 'package:flutter/cupertino.dart';
@@ -5,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:table_calendar/table_calendar.dart';
 import 'utils.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 void main() {
   runApp(const MyApp());
@@ -19,6 +21,7 @@ class MyApp extends StatelessWidget {
       title: 'Flutter Demo',
       theme: ThemeData(
         primarySwatch: Colors.blue,
+        textTheme: GoogleFonts.quicksandTextTheme(),
       ),
       home: const MyHomePage(title: 'Flutter Demo Home Page'),
     );
@@ -117,7 +120,9 @@ class _MyHomePageState extends State<MyHomePage> {
         );
         for (final event in eventsForDay) {
           nextSevenDaysEvents.add(
-            GestureDetector(
+            Padding(
+              padding: EdgeInsets.symmetric(vertical: 8),
+              child: GestureDetector(
               onTap: () {
                 showDialog(
                   context: context,
@@ -150,30 +155,40 @@ class _MyHomePageState extends State<MyHomePage> {
                   },
                 );
               },
+               child: Padding(
+                padding: EdgeInsets.only(left: 10),
               child: ElevatedButton(
                 onPressed: null,
                 style: ButtonStyle(
+                  minimumSize: MaterialStateProperty.all(Size(125, 30)),
+                  maximumSize: MaterialStateProperty.all(Size(125, 30)),
                   shape: MaterialStateProperty.all(
                     RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(5),
+                      borderRadius: BorderRadius.circular(7),
+                      side: BorderSide(color: Colors.black),
                     ),
                   ),
                   padding: MaterialStateProperty.all(
-                    EdgeInsets.symmetric(vertical: 5, horizontal: 8),
-                  ),
+                    EdgeInsets.symmetric(vertical: 5, horizontal: 5),
+                    ),
                   backgroundColor: MaterialStateProperty.all(Colors.white),
+                  textStyle: MaterialStateProperty.all(
+                    TextStyle(
+                      fontWeight: FontWeight.bold,
+                      color: Colors.black),
                 ),
-                child: Text(event.title),
+                ),
+                child: Text(event.title, style: TextStyle(fontWeight: FontWeight.bold,color: Colors.black)),
               ),
             ),
-          );
+          )));
         }
       }
     }
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('TableCalendar - Events'),
+        title: const Text('Kalenteri ja tapahtumat'),
       ),
       backgroundColor: Colors.grey,
       body: Column(
@@ -241,14 +256,17 @@ class _MyHomePageState extends State<MyHomePage> {
           ),
           const SizedBox(height: 8.0),
           Column(
+            
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(
+               Text(
                 'Seuraavan viikon tapahtumat:',
                 style: TextStyle(fontWeight: FontWeight.bold),
               ),
+              
+              SizedBox(height: 8),
               ...nextSevenDaysEvents,
-            ],
+          ],
           ),
        
         ],
