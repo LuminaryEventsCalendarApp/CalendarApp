@@ -14,6 +14,7 @@ class Calendar extends StatefulWidget {
 }
 
 class _CalendarState extends State<Calendar> {
+  String _enteredText = '';
   late final ValueNotifier<List<Event>> _selectedEvents;
   CalendarFormat _calendarFormat = CalendarFormat.month;
   RangeSelectionMode _rangeSelectionMode = RangeSelectionMode
@@ -97,9 +98,90 @@ class _CalendarState extends State<Calendar> {
 
   @override
   Widget build(BuildContext context) {
+    final List<Widget> nextSevenDaysEvents = [];
+
+    final DateTime nextWeek = kToday.add(const Duration(days: 7));
+    for (int i = 0; i < 7; i++) {
+      final DateTime day = kToday.add(Duration(days: i));
+      if (kEvents.containsKey(day)) {
+        final eventsForDay = kEvents[day]!;
+        nextSevenDaysEvents.add(
+          Text(
+            '${day.day}/${day.month} tapahtumat:',
+            style: TextStyle(fontWeight: FontWeight.bold),
+          ),
+        );
+        for (final event in eventsForDay) {
+          nextSevenDaysEvents.add(
+            Padding(
+              padding: EdgeInsets.symmetric(vertical: 8),
+              child: GestureDetector(
+              onTap: () {
+                showDialog(
+                  context: context,
+                  builder: (BuildContext context) {
+                    return AlertDialog(
+                      title: Text('Tapahtuman tiedot ${day.day}/${day.month}'),
+                      content: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Text('Tarvittavat paketit tapahtumaan: ${event.title}'),
+                          SizedBox(height: 16),
+                          Text(
+                            'Paketti',
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                            ),                           
+                            ), 
+                        ],
+                      ),
+                      actions: <Widget>[
+                        TextButton(
+                          onPressed: () {
+                            Navigator.of(context).pop();
+                          },
+                          child: Text('Sulje'),
+                        ),
+                      ],
+                    );
+                  },
+                );
+              },
+               child: Padding(
+                padding: EdgeInsets.only(left: 10),
+              child: ElevatedButton(
+                onPressed: null,
+                style: ButtonStyle(
+                  minimumSize: MaterialStateProperty.all(Size(125, 30)),
+                  maximumSize: MaterialStateProperty.all(Size(125, 30)),
+                  shape: MaterialStateProperty.all(
+                    RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(7),
+                      side: BorderSide(color: Colors.black),
+                    ),
+                  ),
+                  padding: MaterialStateProperty.all(
+                    EdgeInsets.symmetric(vertical: 5, horizontal: 5),
+                    ),
+                  backgroundColor: MaterialStateProperty.all(Colors.white),
+                  textStyle: MaterialStateProperty.all(
+                    TextStyle(
+                      fontWeight: FontWeight.bold,
+                      color: Colors.black),
+                ),
+                ),
+                child: Text(event.title, style: TextStyle(fontWeight: FontWeight.bold,color: Colors.black)),
+              ),
+            ),
+          )));
+        }
+      }
+    }
+
     return Scaffold(
       appBar: AppBar(
-        title: const Text('TableCalendar - Events'),
+        title: const Text('Kalenteri ja tapahtumat'),
       ),
       drawer: Drawer(
         child: ListView(
@@ -120,97 +202,125 @@ class _CalendarState extends State<Calendar> {
             ListTile(
               title: const Text('Kalenteri'),
               onTap: () {
-                 Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => Calendar()),
-          );
-                // Add navigation logic for option 1 here
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => Calendar()),
+                );
               },
             ),
             ListTile(
               title: const Text('Tavaraluettelo'),
               onTap: () {
-                 Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => const Inventory()),
-          );
-                // Add navigation logic for option 2 here
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => Inventory()),
+                );
               },
             ),
             ListTile(
               title: const Text('Asetukset'),
               onTap: () {
-                 Navigator.pop(context);
-                 Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => const Settings()),
-          );
-                // Add navigation logic for option 1 here
+                Navigator.pop(context);
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => const Settings()),
+              );
               },
             ),
-            // Add more options as needed
           ],
         ),
       ),
+      backgroundColor: Colors.grey,
       body: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          TableCalendar<Event>(
-            firstDay: kFirstDay,
-            lastDay: kLastDay,
-            focusedDay: _focusedDay,
-            selectedDayPredicate: (day) => isSameDay(_selectedDay, day),
-            rangeStartDay: _rangeStart,
-            rangeEndDay: _rangeEnd,
-            calendarFormat: _calendarFormat,
-            rangeSelectionMode: _rangeSelectionMode,
-            eventLoader: _getEventsForDay,
-            startingDayOfWeek: StartingDayOfWeek.monday,
-            calendarStyle: const CalendarStyle(
-              // Use `CalendarStyle` to customize the UI
-              outsideDaysVisible: false,
-            ),
-            onDaySelected: _onDaySelected,
-            onRangeSelected: _onRangeSelected,
-            onFormatChanged: (format) {
-              if (_calendarFormat != format) {
-                setState(() {
-                  _calendarFormat = format;
-                });
-              }
-            },
-            onPageChanged: (focusedDay) {
-              _focusedDay = focusedDay;
-            },
-          ),
-          const SizedBox(height: 8.0),
           Expanded(
-            child: ValueListenableBuilder<List<Event>>(
-              valueListenable: _selectedEvents,
-              builder: (context, value, _) {
-                return ListView.builder(
-                  itemCount: value.length,
-                  itemBuilder: (context, index) {
-                    return Container(
-                      margin: const EdgeInsets.symmetric(
-                        horizontal: 12.0,
-                        vertical: 4.0,
-                      ),
-                      decoration: BoxDecoration(
-                        border: Border.all(),
-                        borderRadius: BorderRadius.circular(12.0),
-                      ),
-                      child: ListTile(
-                        onTap: () => print('${value[index]}'),
-                        title: Text('${value[index]}'),
-                      ),
-                    );
+            child: SingleChildScrollView(
+              child: SizedBox(
+                height: 340,
+                child: TableCalendar<Event>(
+                  firstDay: kFirstDay,
+                  lastDay: kLastDay,
+                  focusedDay: _focusedDay,
+                  selectedDayPredicate: (day) {
+                    return isSameDay(_selectedDay, day);
                   },
-                );
+                  rangeStartDay: _rangeStart,
+                  rangeEndDay: _rangeEnd,
+                  calendarFormat: _calendarFormat,
+                  rangeSelectionMode: _rangeSelectionMode,
+                  eventLoader: (day) {
+                    return _getEventsForDay(day);
+                  },
+                  startingDayOfWeek: StartingDayOfWeek.monday,
+                  calendarStyle: const CalendarStyle(
+                    outsideDaysVisible: false,
+                  ),
+                  onDaySelected: _onDaySelected,
+                  onRangeSelected: _onRangeSelected,
+                  onFormatChanged: (format) {
+                    if (_calendarFormat != format) {
+                      setState(() {
+                        _calendarFormat = format;
+                      });
+                    }
+                  },
+                  onPageChanged: (focusedDay) {
+                    setState(() {
+                      _focusedDay = focusedDay;
+                      _selectedDay = focusedDay; // Update _selectedDay
+                      _selectedEvents.value = _getEventsForDay(focusedDay);
+                    });
+                  },
+                ),
+              ),
+            ),
+          ),
+          SizedBox(height: 20),
+          Padding(
+            padding: EdgeInsets.symmetric(horizontal: 8, vertical: 10),
+            child: TextField(
+              decoration: InputDecoration(
+                border: OutlineInputBorder(),
+                hintText: 'Uusi tapahtuma',
+              ),
+              onChanged: (value) {
+                setState(() {
+                  _enteredText = value; // Update the entered text
+                });
+              },
+              onSubmitted: (_) {
+                _addEvent(_selectedDay ?? DateTime.now());
               },
             ),
           ),
+          const SizedBox(height: 8.0),
+          Column(
+            
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+               Text(
+                'Seuraavan viikon tapahtumat:',
+                style: TextStyle(fontWeight: FontWeight.bold),
+              ),
+              
+              SizedBox(height: 8),
+              ...nextSevenDaysEvents,
+          ],
+          ),
+       
         ],
       ),
     );
+  }
+
+  void _addEvent(DateTime selectedDate) {
+    if (kEvents.containsKey(selectedDate)) {
+      kEvents[selectedDate]!.add(Event(_enteredText));
+    } else {
+      kEvents[selectedDate] = [Event(_enteredText)];
+    }
+
+    setState(() {});
   }
 }
