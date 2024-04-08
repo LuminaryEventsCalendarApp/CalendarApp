@@ -1,14 +1,15 @@
 import 'package:flutter/material.dart';
 import 'calendar.dart';
+import 'package:side_navigation/side_navigation.dart';
+import 'settings.dart';
 import 'inventory.dart';
-import 'new_orders.dart';
 
 void main() {
-  runApp(const Settings());
+  runApp(const New_orders());
 }
 
-class Settings extends StatelessWidget {
-  const Settings({super.key});
+class New_orders extends StatelessWidget {
+  const New_orders({super.key});
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
@@ -26,13 +27,15 @@ class Settings extends StatelessWidget {
         // is not restarted.
         primarySwatch: Colors.blue,
       ),
-      home: const MySettingsPage(title: 'Flutter Demo Home Page'),
+      home: const MyNew_ordersPage(title: 'Flutter Demo Home Page'),
     );
   }
 }
 
-class MySettingsPage extends StatefulWidget {
-  const MySettingsPage({super.key, required this.title});
+class MyNew_ordersPage extends StatefulWidget {
+  const MyNew_ordersPage
+  ({super.key, required this.title});
+  
 
   // This widget is the home page of your application. It is stateful, meaning
   // that it has a State object (defined below) that contains fields that affect
@@ -46,25 +49,28 @@ class MySettingsPage extends StatefulWidget {
   final String title;
 
   @override
-  State<MySettingsPage> createState() => _MySettingsPage();
+  State<MyNew_ordersPage> createState() => _MyNew_ordersPage();
 }
 
-class _MySettingsPage extends State<MySettingsPage> {
-  @override
+class _MyNew_ordersPage extends State<MyNew_ordersPage> {
   Widget build(BuildContext context) {
     List<Widget> views = const [
-      Center(
-        child: Text('Dashboard'),
-      ),
-      Center(
-        child: Text('Account'),
-      ),
-      Center(
-        child: Text('Settings'),
-      ),
-    ];
+    Center(
+      child: Text('Dashboard'),
+    ),
+    Center(
+      child: Text('Account'),
+    ),
+    Center(
+      child: Text('Settings'),
+    ),
+    Center(
+      child: Text('New orders'),
+    ),
+  ];
 
-    /// The currently selected index of the bar
+  /// The currently selected index of the bar
+  int selectedIndex = 0;
     // This method is rerun every time setState is called, for instance as done
     // by the _incrementCounter method above.
     //
@@ -75,7 +81,7 @@ class _MySettingsPage extends State<MySettingsPage> {
       appBar: AppBar(
         // Here we take the value from the MyHomePage object that was created by
         // the App.build method, and use it to set our appbar title.
-        title: const Text('Asetukset'),
+        title: const Text('Uudet tilaukset'),
       ),
       drawer: Drawer(
         backgroundColor: Colors.black,
@@ -101,10 +107,10 @@ class _MySettingsPage extends State<MySettingsPage> {
               leading: const Icon(Icons.calendar_today, color: Colors.white),
               title: const Text('Kalenteri',style: TextStyle(color: Colors.white),),
               onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => const Calendar()),
-                );
+                 Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => Calendar()),
+          );
                 // Add navigation logic for option 1 here
               },
             ),
@@ -112,10 +118,10 @@ class _MySettingsPage extends State<MySettingsPage> {
               leading: const Icon(Icons.inventory, color: Colors.white),
               title: const Text('Tavaraluettelo',style: TextStyle(color: Colors.white),),
               onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => const Inventory()),
-                );
+                 Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => const Inventory()),
+          );
                 // Add navigation logic for option 2 here
               },
             ),
@@ -123,11 +129,11 @@ class _MySettingsPage extends State<MySettingsPage> {
               leading: const Icon(Icons.settings, color: Colors.white),
               title: const Text('Asetukset',style: TextStyle(color: Colors.white),),
               onTap: () {
-                Navigator.pop(context);
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => const Settings()),
-                );
+                 Navigator.pop(context);
+                 Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => const Settings()),
+          );
                 // Add navigation logic for option 1 here
               },
             ),
@@ -138,7 +144,7 @@ class _MySettingsPage extends State<MySettingsPage> {
                  Navigator.pop(context);
                  Navigator.push(
             context,
-            MaterialPageRoute(builder: (context) => const New_orders()),
+            MaterialPageRoute(builder: (context) => const Settings()),
           );
                 // Add navigation logic for option 1 here
               },
@@ -162,7 +168,7 @@ class _MySettingsPage extends State<MySettingsPage> {
         onPressed: () {
           Navigator.push(
             context,
-            MaterialPageRoute(builder: (context) => const Calendar()),
+            MaterialPageRoute(builder: (context) => Calendar()),
           );
         },
         child: const Text('Open Calendar'),
