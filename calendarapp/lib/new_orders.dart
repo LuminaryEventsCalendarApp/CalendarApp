@@ -3,14 +3,13 @@ import 'calendar.dart';
 import 'package:side_navigation/side_navigation.dart';
 import 'settings.dart';
 import 'inventory.dart';
-import 'new_orders.dart';
 
 void main() {
-  runApp(const Settings());
+  runApp(const New_orders());
 }
 
-class Settings extends StatelessWidget {
-  const Settings({super.key});
+class New_orders extends StatelessWidget {
+  const New_orders({super.key});
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
@@ -28,13 +27,13 @@ class Settings extends StatelessWidget {
         // is not restarted.
         primarySwatch: Colors.blue,
       ),
-      home: const MySettingsPage(title: 'Flutter Demo Home Page'),
+      home: const MyNew_ordersPage(title: 'Flutter Demo Home Page'),
     );
   }
 }
 
-class MySettingsPage extends StatefulWidget {
-  const MySettingsPage
+class MyNew_ordersPage extends StatefulWidget {
+  const MyNew_ordersPage
   ({super.key, required this.title});
   
 
@@ -50,10 +49,10 @@ class MySettingsPage extends StatefulWidget {
   final String title;
 
   @override
-  State<MySettingsPage> createState() => _MySettingsPage();
+  State<MyNew_ordersPage> createState() => _MyNew_ordersPage();
 }
 
-class _MySettingsPage extends State<MySettingsPage> {
+class _MyNew_ordersPage extends State<MyNew_ordersPage> {
   Widget build(BuildContext context) {
     List<Widget> views = const [
     Center(
@@ -64,6 +63,9 @@ class _MySettingsPage extends State<MySettingsPage> {
     ),
     Center(
       child: Text('Settings'),
+    ),
+    Center(
+      child: Text('New orders'),
     ),
   ];
 
@@ -79,7 +81,7 @@ class _MySettingsPage extends State<MySettingsPage> {
       appBar: AppBar(
         // Here we take the value from the MyHomePage object that was created by
         // the App.build method, and use it to set our appbar title.
-        title: const Text('Asetukset'),
+        title: const Text('Uudet tilaukset'),
       ),
       drawer: Drawer(
         backgroundColor: Colors.black,
@@ -142,7 +144,7 @@ class _MySettingsPage extends State<MySettingsPage> {
                  Navigator.pop(context);
                  Navigator.push(
             context,
-            MaterialPageRoute(builder: (context) => const New_orders()),
+            MaterialPageRoute(builder: (context) => const Settings()),
           );
                 // Add navigation logic for option 1 here
               },

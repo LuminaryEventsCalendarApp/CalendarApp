@@ -1,8 +1,10 @@
+import 'package:calendarapp/new_orders.dart';
 import 'package:flutter/material.dart';
 import 'package:table_calendar/table_calendar.dart';
 import 'package:side_navigation/side_navigation.dart';
 import 'settings.dart';
 import 'inventory.dart';
+
 
 import '../utils.dart';
 
@@ -183,13 +185,17 @@ class _CalendarState extends State<Calendar> {
       appBar: AppBar(
         title: const Text('Kalenteri ja tapahtumat'),
       ),
-      drawer: Drawer(
+       drawer: Drawer(
+        backgroundColor: Colors.black,
         child: ListView(
           padding: EdgeInsets.zero,
           children: [
             const DrawerHeader(
               decoration: BoxDecoration(
-                color: Color.fromARGB(255, 0, 0, 0),
+                image: DecorationImage(
+              image: AssetImage('assets/luminaryevents.png'), // Your background image
+              fit: BoxFit.cover,
+            ),
               ),
               child: Text(
                 'Navigointi',
@@ -200,32 +206,61 @@ class _CalendarState extends State<Calendar> {
               ),
             ),
             ListTile(
-              title: const Text('Kalenteri'),
+              leading: const Icon(Icons.calendar_today, color: Colors.white),
+              title: const Text('Kalenteri',style: TextStyle(color: Colors.white),),
               onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => Calendar()),
-                );
+                 Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => Calendar()),
+          );
+                // Add navigation logic for option 1 here
               },
             ),
             ListTile(
-              title: const Text('Tavaraluettelo'),
+              leading: const Icon(Icons.inventory, color: Colors.white),
+              title: const Text('Tavaraluettelo',style: TextStyle(color: Colors.white),),
               onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => Inventory()),
-                );
+                 Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => const Inventory()),
+          );
+                // Add navigation logic for option 2 here
               },
             ),
             ListTile(
-              title: const Text('Asetukset'),
+              leading: const Icon(Icons.settings, color: Colors.white),
+              title: const Text('Asetukset',style: TextStyle(color: Colors.white),),
               onTap: () {
-                Navigator.pop(context);
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => const Settings()),
-              );
+                 Navigator.pop(context);
+                 Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => const Settings()),
+          );
+                // Add navigation logic for option 1 here
               },
+            ),
+            ListTile(
+              leading: const Icon(Icons.shopping_cart, color: Colors.white),
+              title: const Text('Uudet tilaukset',style: TextStyle(color: Colors.white),),
+              onTap: () {
+                 Navigator.pop(context);
+                 Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => const New_orders()),
+          );
+                // Add navigation logic for option 1 here
+              },
+            ),
+            // Add more options as needed
+            const ListTile(
+              title: Text(
+                '© 2024 Luminary Events',
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 12,
+                ),
+              ),
             ),
           ],
         ),
