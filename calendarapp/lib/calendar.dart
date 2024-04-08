@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:table_calendar/table_calendar.dart';
-import 'package:side_navigation/side_navigation.dart';
 import 'settings.dart';
 import 'inventory.dart';
 
@@ -108,13 +107,13 @@ class _CalendarState extends State<Calendar> {
         nextSevenDaysEvents.add(
           Text(
             '${day.day}/${day.month} tapahtumat:',
-            style: TextStyle(fontWeight: FontWeight.bold),
+            style: const TextStyle(fontWeight: FontWeight.bold),
           ),
         );
         for (final event in eventsForDay) {
           nextSevenDaysEvents.add(
             Padding(
-              padding: EdgeInsets.symmetric(vertical: 8),
+              padding: const EdgeInsets.symmetric(vertical: 8),
               child: GestureDetector(
               onTap: () {
                 showDialog(
@@ -127,8 +126,8 @@ class _CalendarState extends State<Calendar> {
                         mainAxisSize: MainAxisSize.min,
                         children: [
                           Text('Tarvittavat paketit tapahtumaan: ${event.title}'),
-                          SizedBox(height: 16),
-                          Text(
+                          const SizedBox(height: 16),
+                          const Text(
                             'Paketti',
                             style: TextStyle(
                               fontWeight: FontWeight.bold,
@@ -141,7 +140,7 @@ class _CalendarState extends State<Calendar> {
                           onPressed: () {
                             Navigator.of(context).pop();
                           },
-                          child: Text('Sulje'),
+                          child: const Text('Sulje'),
                         ),
                       ],
                     );
@@ -149,29 +148,29 @@ class _CalendarState extends State<Calendar> {
                 );
               },
                child: Padding(
-                padding: EdgeInsets.only(left: 10),
+                padding: const EdgeInsets.only(left: 10),
               child: ElevatedButton(
                 onPressed: null,
                 style: ButtonStyle(
-                  minimumSize: MaterialStateProperty.all(Size(125, 30)),
-                  maximumSize: MaterialStateProperty.all(Size(125, 30)),
+                  minimumSize: MaterialStateProperty.all(const Size(125, 30)),
+                  maximumSize: MaterialStateProperty.all(const Size(125, 30)),
                   shape: MaterialStateProperty.all(
                     RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(7),
-                      side: BorderSide(color: Colors.black),
+                      side: const BorderSide(color: Colors.black),
                     ),
                   ),
                   padding: MaterialStateProperty.all(
-                    EdgeInsets.symmetric(vertical: 5, horizontal: 5),
+                    const EdgeInsets.symmetric(vertical: 5, horizontal: 5),
                     ),
                   backgroundColor: MaterialStateProperty.all(Colors.white),
                   textStyle: MaterialStateProperty.all(
-                    TextStyle(
+                    const TextStyle(
                       fontWeight: FontWeight.bold,
                       color: Colors.black),
                 ),
                 ),
-                child: Text(event.title, style: TextStyle(fontWeight: FontWeight.bold,color: Colors.black)),
+                child: Text(event.title, style: const TextStyle(fontWeight: FontWeight.bold,color: Colors.black)),
               ),
             ),
           )));
@@ -204,7 +203,7 @@ class _CalendarState extends State<Calendar> {
               onTap: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => Calendar()),
+                  MaterialPageRoute(builder: (context) => const Calendar()),
                 );
               },
             ),
@@ -213,7 +212,7 @@ class _CalendarState extends State<Calendar> {
               onTap: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => Inventory()),
+                  MaterialPageRoute(builder: (context) => const Inventory()),
                 );
               },
             ),
@@ -276,11 +275,11 @@ class _CalendarState extends State<Calendar> {
               ),
             ),
           ),
-          SizedBox(height: 20),
+          const SizedBox(height: 20),
           Padding(
-            padding: EdgeInsets.symmetric(horizontal: 8, vertical: 10),
+            padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 10),
             child: TextField(
-              decoration: InputDecoration(
+              decoration: const InputDecoration(
                 border: OutlineInputBorder(),
                 hintText: 'Uusi tapahtuma',
               ),
@@ -299,12 +298,12 @@ class _CalendarState extends State<Calendar> {
             
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-               Text(
+               const Text(
                 'Seuraavan viikon tapahtumat:',
                 style: TextStyle(fontWeight: FontWeight.bold),
               ),
               
-              SizedBox(height: 8),
+              const SizedBox(height: 8),
               ...nextSevenDaysEvents,
           ],
           ),

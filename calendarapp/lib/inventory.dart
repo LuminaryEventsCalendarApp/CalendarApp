@@ -8,7 +8,7 @@ void main() {
 }
 
 class Inventory extends StatelessWidget {
-  const Inventory({Key? key}) : super(key: key);
+  const Inventory({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -19,7 +19,7 @@ class Inventory extends StatelessWidget {
 }
 
 class MyInventoryPage extends StatelessWidget {
-  const MyInventoryPage({Key? key}) : super(key: key);
+  const MyInventoryPage({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -52,7 +52,7 @@ class MyInventoryPage extends StatelessWidget {
               onTap: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => Calendar()),
+                  MaterialPageRoute(builder: (context) => const Calendar()),
                 );
               },
             ),

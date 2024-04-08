@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'calendar.dart';
-import 'package:side_navigation/side_navigation.dart';
-import 'settings.dart';
 import 'inventory.dart';
 
 void main() {
@@ -33,9 +31,7 @@ class Settings extends StatelessWidget {
 }
 
 class MySettingsPage extends StatefulWidget {
-  const MySettingsPage
-  ({super.key, required this.title});
-  
+  const MySettingsPage({super.key, required this.title});
 
   // This widget is the home page of your application. It is stateful, meaning
   // that it has a State object (defined below) that contains fields that affect
@@ -53,21 +49,21 @@ class MySettingsPage extends StatefulWidget {
 }
 
 class _MySettingsPage extends State<MySettingsPage> {
+  @override
   Widget build(BuildContext context) {
     List<Widget> views = const [
-    Center(
-      child: Text('Dashboard'),
-    ),
-    Center(
-      child: Text('Account'),
-    ),
-    Center(
-      child: Text('Settings'),
-    ),
-  ];
+      Center(
+        child: Text('Dashboard'),
+      ),
+      Center(
+        child: Text('Account'),
+      ),
+      Center(
+        child: Text('Settings'),
+      ),
+    ];
 
-  /// The currently selected index of the bar
-  int selectedIndex = 0;
+    /// The currently selected index of the bar
     // This method is rerun every time setState is called, for instance as done
     // by the _incrementCounter method above.
     //
@@ -99,31 +95,31 @@ class _MySettingsPage extends State<MySettingsPage> {
             ListTile(
               title: const Text('Kalenteri'),
               onTap: () {
-                 Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => Calendar()),
-          );
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => const Calendar()),
+                );
                 // Add navigation logic for option 1 here
               },
             ),
             ListTile(
               title: const Text('Tavaraluettelo'),
               onTap: () {
-                 Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => const Inventory()),
-          );
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => const Inventory()),
+                );
                 // Add navigation logic for option 2 here
               },
             ),
             ListTile(
               title: const Text('Asetukset'),
               onTap: () {
-                 Navigator.pop(context);
-                 Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => const Settings()),
-          );
+                Navigator.pop(context);
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => const Settings()),
+                );
                 // Add navigation logic for option 1 here
               },
             ),
@@ -136,7 +132,7 @@ class _MySettingsPage extends State<MySettingsPage> {
         onPressed: () {
           Navigator.push(
             context,
-            MaterialPageRoute(builder: (context) => Calendar()),
+            MaterialPageRoute(builder: (context) => const Calendar()),
           );
         },
         child: const Text('Open Calendar'),

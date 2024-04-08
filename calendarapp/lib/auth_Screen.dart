@@ -63,7 +63,7 @@ class _AuthScreenState extends State<AuthScreen> {
     try {
       final authenticated = await auth.authenticate(
           localizedReason: 'Authenticate with fingerprint or Face ID',
-          options: AuthenticationOptions(
+          options: const AuthenticationOptions(
             stickyAuth: true,
             biometricOnly: true,
           ));
@@ -73,8 +73,8 @@ class _AuthScreenState extends State<AuthScreen> {
       }
 
       if (authenticated) {
-        Navigator.push(
-            context, MaterialPageRoute(builder: ((context) => Calendar())));
+        Navigator.push(context,
+            MaterialPageRoute(builder: ((context) => const Calendar())));
       }
     } on PlatformException catch (e) {
       print(e);
@@ -84,49 +84,61 @@ class _AuthScreenState extends State<AuthScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Biometric Authentication'),
+    return Container(
+      decoration: const BoxDecoration(
+        image: DecorationImage(
+          image: AssetImage('assets/IMG_9742.JPG'), // Change to your image path
+          fit: BoxFit.cover,
+        ),
       ),
-      body: Center(
+      child: Scaffold(
+        appBar: AppBar(
+          title: const Text('Biometric Authentication'),
+        ),
+        backgroundColor:
+            Colors.transparent, // Make scaffold background transparent
+        body: Center(
           child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Text(
-              supportState == SupportState.supported
-                  ? 'Biometric authentication is supported on this device'
-                  : supportState == SupportState.unSupported
-                      ? 'Biometric authentication is not supported on this device'
-                      : 'Checking biometric support...',
-              style: TextStyle(
-                fontWeight: FontWeight.bold,
-                color: supportState == SupportState.supported
-                    ? Colors.green
-                    : supportState == SupportState.unSupported
-                        ? Colors.red
-                        : Colors.grey,
-              )),
-          const SizedBox(height: 20),
-          Text('Supported biometrics : $availableBiometrics'),
-          const SizedBox(height: 20),
-          Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Image.asset(
-                'assets/face_id.png',
-                width: 40,
-                height: 40,
-                fit: BoxFit.cover,
+              Text(
+                supportState == SupportState.supported
+                    ? 'Biometric authentication is supported on this device'
+                    : supportState == SupportState.unSupported
+                        ? 'Biometric authentication is not supported on this device'
+                        : 'Checking biometric support...',
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  color: supportState == SupportState.supported
+                      ? Colors.green
+                      : supportState == SupportState.unSupported
+                          ? Colors.red
+                          : Colors.grey,
+                ),
               ),
-              const SizedBox(width: 20),
-              ElevatedButton(
-                onPressed: authenticateWithBiometrics,
-                child: const Text("Authenticate with Face ID"),
-              )
+              const SizedBox(height: 20),
+              Text('Supported biometrics : $availableBiometrics'),
+              const SizedBox(height: 20),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Image.asset(
+                    'assets/face_id.png',
+                    width: 40,
+                    height: 40,
+                    fit: BoxFit.cover,
+                  ),
+                  const SizedBox(width: 20),
+                  ElevatedButton(
+                    onPressed: authenticateWithBiometrics,
+                    child: const Text("Authenticate with Face ID"),
+                  ),
+                ],
+              ),
             ],
-          )
-        ],
-      )),
+          ),
+        ),
+      ),
     );
   }
 }
