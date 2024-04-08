@@ -58,7 +58,7 @@ class MyInventoryPage extends StatelessWidget {
               onTap: () {
                  Navigator.push(
             context,
-            MaterialPageRoute(builder: (context) => Calendar()),
+            MaterialPageRoute(builder: (context) => const Calendar()),
           );
                 // Add navigation logic for option 1 here
               },

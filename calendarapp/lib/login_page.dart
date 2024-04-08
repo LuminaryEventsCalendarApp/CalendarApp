@@ -1,3 +1,5 @@
+import 'package:calendarapp/calendar.dart';
+import 'package:calendarapp/components/authentication.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'components/my_textfield.dart';
@@ -74,47 +76,81 @@ class _LoginPageState extends State<LoginPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Colors.grey[300],
-      body: SafeArea(
-        child: SingleChildScrollView(
-          child: Center(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                const SizedBox(height: 50),
-
-                //logo
-                const Icon(
-                  Icons.lock,
-                  size: 100,
-                ),
-
-                const SizedBox(height: 50),
-
-                //username
-                MyTextField(
-                  controller: emailController,
-                  hintText: 'Username',
-                  obscureText: false,
-                ),
-
-                //const SizedBox(height: 10),
-
-                //password
-                MyTextField(
-                  controller: passwordController,
-                  hintText: 'Password',
-                  obscureText: true,
-                ),
-
-                //sign in button
-                MyButton(
-                  onTap: signUserIn,
-                ),
-
-                const SizedBox(height: 50),
-              ],
+    return Container(
+      decoration: const BoxDecoration(
+        image: DecorationImage(
+          image: AssetImage('assets/IMG_9742.JPG'), // Background image path
+          fit: BoxFit.cover,
+        ),
+      ),
+      child: Scaffold(
+        backgroundColor:
+            Colors.transparent, // Make scaffold background transparent
+        body: SafeArea(
+          child: SingleChildScrollView(
+            child: Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  const Text("Login to the App",
+                      style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 30,
+                          fontWeight: FontWeight.w800)),
+                  const SizedBox(
+                    height: 28,
+                  ),
+                  const Text("Use your fingerprint to log into the app",
+                      style: TextStyle(
+                        color: Colors.white,
+                      )),
+                  const SizedBox(
+                    height: 28,
+                  ),
+                  const Divider(
+                    color: Colors.white60,
+                  ),
+                  const SizedBox(
+                    height: 28,
+                  ),
+                  ElevatedButton.icon(
+                    onPressed: () async {
+                      bool auth = await Authentication.authentication();
+                      print("can authenticate $auth");
+                      if (auth) {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: ((context) => const Calendar()),
+                          ),
+                        );
+                      }
+                    },
+                    icon: const Icon(Icons.fingerprint),
+                    label: const Text("Authenticate"),
+                  ),
+                  const SizedBox(height: 50),
+                  // username
+                  MyTextField(
+                    controller: emailController,
+                    hintText: 'Username',
+                    obscureText: false,
+                  ),
+                  // const SizedBox(height: 10),
+                  // password
+                  MyTextField(
+                    controller: passwordController,
+                    hintText: 'Password',
+                    obscureText: true,
+                  ),
+                  // sign in button
+                  MyButton(
+                    onTap: signUserIn,
+                  ),
+                  const SizedBox(height: 50),
+                ],
+              ),
             ),
           ),
         ),

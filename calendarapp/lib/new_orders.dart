@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'calendar.dart';
-import 'package:side_navigation/side_navigation.dart';
 import 'settings.dart';
 import 'inventory.dart';
 
@@ -53,6 +52,7 @@ class MyNew_ordersPage extends StatefulWidget {
 }
 
 class _MyNew_ordersPage extends State<MyNew_ordersPage> {
+  @override
   Widget build(BuildContext context) {
     List<Widget> views = const [
     Center(
@@ -109,7 +109,7 @@ class _MyNew_ordersPage extends State<MyNew_ordersPage> {
               onTap: () {
                  Navigator.push(
             context,
-            MaterialPageRoute(builder: (context) => Calendar()),
+            MaterialPageRoute(builder: (context) => const Calendar()),
           );
                 // Add navigation logic for option 1 here
               },
@@ -168,7 +168,7 @@ class _MyNew_ordersPage extends State<MyNew_ordersPage> {
         onPressed: () {
           Navigator.push(
             context,
-            MaterialPageRoute(builder: (context) => Calendar()),
+            MaterialPageRoute(builder: (context) => const Calendar()),
           );
         },
         child: const Text('Open Calendar'),
