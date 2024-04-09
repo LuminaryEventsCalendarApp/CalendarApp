@@ -27,6 +27,7 @@ class Settings extends StatelessWidget {
         primarySwatch: Colors.blue,
       ),
       home: const MySettingsPage(title: 'Flutter Demo Home Page'),
+      
     );
   }
 }
@@ -75,7 +76,9 @@ class _MySettingsPage extends State<MySettingsPage> {
       appBar: AppBar(
         // Here we take the value from the MyHomePage object that was created by
         // the App.build method, and use it to set our appbar title.
-        title: const Text('Asetukset'),
+        iconTheme: const IconThemeData(color: Colors.white),
+        backgroundColor: Colors.black,
+        title: const Text('Asetukset', style:TextStyle(color: Colors.white)),
       ),
       drawer: Drawer(
         backgroundColor: Colors.black,

@@ -182,7 +182,9 @@ class _CalendarState extends State<Calendar> {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Kalenteri ja tapahtumat'),
+        title: const Text('Kalenteri ja tapahtumat', style:TextStyle(color: Colors.white)),
+        iconTheme: const IconThemeData(color: Colors.white),
+        backgroundColor: Colors.black,
       ),
        drawer: Drawer(
         backgroundColor: Colors.black,
