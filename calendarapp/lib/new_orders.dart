@@ -81,7 +81,9 @@ class _MyNew_ordersPage extends State<MyNew_ordersPage> {
       appBar: AppBar(
         // Here we take the value from the MyHomePage object that was created by
         // the App.build method, and use it to set our appbar title.
-        title: const Text('Uudet tilaukset'),
+        iconTheme: const IconThemeData(color: Colors.white),
+        backgroundColor: Colors.black,
+        title: const Text('Uudet tilaukset', style:TextStyle(color: Colors.white)),
       ),
       drawer: Drawer(
         backgroundColor: Colors.black,

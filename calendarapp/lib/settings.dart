@@ -78,10 +78,14 @@ class _MySettingsPage extends State<MySettingsPage> {
     // than having to individually change instances of widgets.
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Asetukset'),
+        // Here we take the value from the MyHomePage object that was created by
+        // the App.build method, and use it to set our appbar title.
         actions: const [
           IconButton(onPressed: signUserOut, icon: Icon(Icons.logout)),
         ],
+        iconTheme: const IconThemeData(color: Colors.white),
+        backgroundColor: Colors.black,
+        title: const Text('Asetukset', style: TextStyle(color: Colors.white)),
       ),
       drawer: Drawer(
         backgroundColor: Colors.black,
