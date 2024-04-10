@@ -4,7 +4,6 @@ import 'package:table_calendar/table_calendar.dart';
 import 'settings.dart';
 import 'inventory.dart';
 
-
 import '../utils.dart';
 
 class Calendar extends StatefulWidget {
@@ -113,69 +112,73 @@ class _CalendarState extends State<Calendar> {
           ),
         );
         for (final event in eventsForDay) {
-          nextSevenDaysEvents.add(
-            Padding(
+          nextSevenDaysEvents.add(Padding(
               padding: const EdgeInsets.symmetric(vertical: 8),
               child: GestureDetector(
-              onTap: () {
-                showDialog(
-                  context: context,
-                  builder: (BuildContext context) {
-                    return AlertDialog(
-                      title: Text('Tapahtuman tiedot ${day.day}/${day.month}'),
-                      content: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          Text('Tarvittavat paketit tapahtumaan: ${event.title}'),
-                          const SizedBox(height: 16),
-                          const Text(
-                            'Paketti',
-                            style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                            ),                           
-                            ), 
-                        ],
-                      ),
-                      actions: <Widget>[
-                        TextButton(
-                          onPressed: () {
-                            Navigator.of(context).pop();
-                          },
-                          child: const Text('Sulje'),
+                onTap: () {
+                  showDialog(
+                    context: context,
+                    builder: (BuildContext context) {
+                      return AlertDialog(
+                        title:
+                            Text('Tapahtuman tiedot ${day.day}/${day.month}'),
+                        content: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Text(
+                                'Tarvittavat paketit tapahtumaan: ${event.title}'),
+                            const SizedBox(height: 16),
+                            const Text(
+                              'Paketti',
+                              style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ],
                         ),
-                      ],
-                    );
-                  },
-                );
-              },
-               child: Padding(
-                padding: const EdgeInsets.only(left: 10),
-              child: ElevatedButton(
-                onPressed: null,
-                style: ButtonStyle(
-                  minimumSize: MaterialStateProperty.all(const Size(125, 30)),
-                  maximumSize: MaterialStateProperty.all(const Size(125, 30)),
-                  shape: MaterialStateProperty.all(
-                    RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(7),
-                      side: const BorderSide(color: Colors.black),
+                        actions: <Widget>[
+                          TextButton(
+                            onPressed: () {
+                              Navigator.of(context).pop();
+                            },
+                            child: const Text('Sulje'),
+                          ),
+                        ],
+                      );
+                    },
+                  );
+                },
+                child: Padding(
+                  padding: const EdgeInsets.only(left: 10),
+                  child: ElevatedButton(
+                    onPressed: null,
+                    style: ButtonStyle(
+                      minimumSize:
+                          MaterialStateProperty.all(const Size(125, 30)),
+                      maximumSize:
+                          MaterialStateProperty.all(const Size(125, 30)),
+                      shape: MaterialStateProperty.all(
+                        RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(7),
+                          side: const BorderSide(color: Colors.black),
+                        ),
+                      ),
+                      padding: MaterialStateProperty.all(
+                        const EdgeInsets.symmetric(vertical: 5, horizontal: 5),
+                      ),
+                      backgroundColor: MaterialStateProperty.all(Colors.white),
+                      textStyle: MaterialStateProperty.all(
+                        const TextStyle(
+                            fontWeight: FontWeight.bold, color: Colors.black),
+                      ),
                     ),
+                    child: Text(event.title,
+                        style: const TextStyle(
+                            fontWeight: FontWeight.bold, color: Colors.black)),
                   ),
-                  padding: MaterialStateProperty.all(
-                    const EdgeInsets.symmetric(vertical: 5, horizontal: 5),
-                    ),
-                  backgroundColor: MaterialStateProperty.all(Colors.white),
-                  textStyle: MaterialStateProperty.all(
-                    const TextStyle(
-                      fontWeight: FontWeight.bold,
-                      color: Colors.black),
                 ),
-                ),
-                child: Text(event.title, style: const TextStyle(fontWeight: FontWeight.bold,color: Colors.black)),
-              ),
-            ),
-          )));
+              )));
         }
       }
     }
@@ -184,7 +187,7 @@ class _CalendarState extends State<Calendar> {
       appBar: AppBar(
         title: const Text('Kalenteri ja tapahtumat'),
       ),
-       drawer: Drawer(
+      drawer: Drawer(
         backgroundColor: Colors.black,
         child: ListView(
           padding: EdgeInsets.zero,
@@ -192,9 +195,10 @@ class _CalendarState extends State<Calendar> {
             const DrawerHeader(
               decoration: BoxDecoration(
                 image: DecorationImage(
-              image: AssetImage('assets/luminaryevents.png'), // Your background image
-              fit: BoxFit.cover,
-            ),
+                  image: AssetImage(
+                      'assets/luminaryevents.png'), // Your background image
+                  fit: BoxFit.cover,
+                ),
               ),
               child: Text(
                 'Navigointi',
@@ -206,47 +210,59 @@ class _CalendarState extends State<Calendar> {
             ),
             ListTile(
               leading: const Icon(Icons.calendar_today, color: Colors.white),
-              title: const Text('Kalenteri',style: TextStyle(color: Colors.white),),
+              title: const Text(
+                'Kalenteri',
+                style: TextStyle(color: Colors.white),
+              ),
               onTap: () {
-                 Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => const Calendar()),
-          );
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => const Calendar()),
+                );
                 // Add navigation logic for option 1 here
               },
             ),
             ListTile(
               leading: const Icon(Icons.inventory, color: Colors.white),
-              title: const Text('Tavaraluettelo',style: TextStyle(color: Colors.white),),
+              title: const Text(
+                'Tavaraluettelo',
+                style: TextStyle(color: Colors.white),
+              ),
               onTap: () {
-                 Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => const Inventory()),
-          );
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => const Inventory()),
+                );
                 // Add navigation logic for option 2 here
               },
             ),
             ListTile(
               leading: const Icon(Icons.settings, color: Colors.white),
-              title: const Text('Asetukset',style: TextStyle(color: Colors.white),),
+              title: const Text(
+                'Asetukset',
+                style: TextStyle(color: Colors.white),
+              ),
               onTap: () {
-                 Navigator.pop(context);
-                 Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => const Settings()),
-          );
+                Navigator.pop(context);
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => const Settings()),
+                );
                 // Add navigation logic for option 1 here
               },
             ),
             ListTile(
               leading: const Icon(Icons.shopping_cart, color: Colors.white),
-              title: const Text('Uudet tilaukset',style: TextStyle(color: Colors.white),),
+              title: const Text(
+                'Uudet tilaukset',
+                style: TextStyle(color: Colors.white),
+              ),
               onTap: () {
-                 Navigator.pop(context);
-                 Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => const New_orders()),
-          );
+                Navigator.pop(context);
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => const New_orders()),
+                );
                 // Add navigation logic for option 1 here
               },
             ),
@@ -264,7 +280,7 @@ class _CalendarState extends State<Calendar> {
           ],
         ),
       ),
-      backgroundColor: Colors.grey,
+      backgroundColor: Colors.white70,
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
@@ -330,19 +346,16 @@ class _CalendarState extends State<Calendar> {
           ),
           const SizedBox(height: 8.0),
           Column(
-            
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-               const Text(
+              const Text(
                 'Seuraavan viikon tapahtumat:',
                 style: TextStyle(fontWeight: FontWeight.bold),
               ),
-              
               const SizedBox(height: 8),
               ...nextSevenDaysEvents,
-          ],
+            ],
           ),
-       
         ],
       ),
     );

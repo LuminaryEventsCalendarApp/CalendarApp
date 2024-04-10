@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'calendar.dart';
 import 'inventory.dart';
@@ -29,6 +30,10 @@ class Settings extends StatelessWidget {
       home: const MySettingsPage(title: 'Flutter Demo Home Page'),
     );
   }
+}
+
+void signUserOut() {
+  FirebaseAuth.instance.signOut();
 }
 
 class MySettingsPage extends StatefulWidget {
@@ -73,9 +78,10 @@ class _MySettingsPage extends State<MySettingsPage> {
     // than having to individually change instances of widgets.
     return Scaffold(
       appBar: AppBar(
-        // Here we take the value from the MyHomePage object that was created by
-        // the App.build method, and use it to set our appbar title.
         title: const Text('Asetukset'),
+        actions: const [
+          IconButton(onPressed: signUserOut, icon: Icon(Icons.logout)),
+        ],
       ),
       drawer: Drawer(
         backgroundColor: Colors.black,
@@ -85,9 +91,10 @@ class _MySettingsPage extends State<MySettingsPage> {
             const DrawerHeader(
               decoration: BoxDecoration(
                 image: DecorationImage(
-              image: AssetImage('assets/luminaryevents.png'), // Your background image
-              fit: BoxFit.cover,
-            ),
+                  image: AssetImage(
+                      'assets/luminaryevents.png'), // Your background image
+                  fit: BoxFit.cover,
+                ),
               ),
               child: Text(
                 'Navigointi',
@@ -99,7 +106,10 @@ class _MySettingsPage extends State<MySettingsPage> {
             ),
             ListTile(
               leading: const Icon(Icons.calendar_today, color: Colors.white),
-              title: const Text('Kalenteri',style: TextStyle(color: Colors.white),),
+              title: const Text(
+                'Kalenteri',
+                style: TextStyle(color: Colors.white),
+              ),
               onTap: () {
                 Navigator.push(
                   context,
@@ -110,7 +120,10 @@ class _MySettingsPage extends State<MySettingsPage> {
             ),
             ListTile(
               leading: const Icon(Icons.inventory, color: Colors.white),
-              title: const Text('Tavaraluettelo',style: TextStyle(color: Colors.white),),
+              title: const Text(
+                'Tavaraluettelo',
+                style: TextStyle(color: Colors.white),
+              ),
               onTap: () {
                 Navigator.push(
                   context,
@@ -121,7 +134,10 @@ class _MySettingsPage extends State<MySettingsPage> {
             ),
             ListTile(
               leading: const Icon(Icons.settings, color: Colors.white),
-              title: const Text('Asetukset',style: TextStyle(color: Colors.white),),
+              title: const Text(
+                'Asetukset',
+                style: TextStyle(color: Colors.white),
+              ),
               onTap: () {
                 Navigator.pop(context);
                 Navigator.push(
@@ -133,13 +149,16 @@ class _MySettingsPage extends State<MySettingsPage> {
             ),
             ListTile(
               leading: const Icon(Icons.shopping_cart, color: Colors.white),
-              title: const Text('Uudet tilaukset',style: TextStyle(color: Colors.white),),
+              title: const Text(
+                'Uudet tilaukset',
+                style: TextStyle(color: Colors.white),
+              ),
               onTap: () {
-                 Navigator.pop(context);
-                 Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => const New_orders()),
-          );
+                Navigator.pop(context);
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => const New_orders()),
+                );
                 // Add navigation logic for option 1 here
               },
             ),
@@ -158,15 +177,16 @@ class _MySettingsPage extends State<MySettingsPage> {
         ),
       ),
       body: Center(
-          child: ElevatedButton(
-        onPressed: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => const Calendar()),
-          );
-        },
-        child: const Text('Open Calendar'),
-      )),
+        child: ElevatedButton(
+          onPressed: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => const Calendar()),
+            );
+          },
+          child: const Text('Open Calendar'),
+        ),
+      ),
     );
   }
 }
