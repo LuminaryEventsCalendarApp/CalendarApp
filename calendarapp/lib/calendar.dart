@@ -99,7 +99,7 @@ class _CalendarState extends State<Calendar> {
   @override
   Widget build(BuildContext context) {
     final List<Widget> nextSevenDaysEvents = [];
-
+    fetchData();
     final DateTime nextWeek = kToday.add(const Duration(days: 7));
     for (int i = 0; i < 7; i++) {
       final DateTime day = kToday.add(Duration(days: i));
@@ -185,7 +185,8 @@ class _CalendarState extends State<Calendar> {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Kalenteri ja tapahtumat', style:TextStyle(color: Colors.white)),
+        title: const Text('Kalenteri ja tapahtumat',
+            style: TextStyle(color: Colors.white)),
         iconTheme: const IconThemeData(color: Colors.white),
         backgroundColor: Colors.black,
       ),

@@ -42,6 +42,7 @@ dependencies:
   firebase_auth: ^4.18.0
   local_auth: ^2.2.0
   side_navigation: ^1.0.4
+  dotenv: ^4.2.0
 
 dev_dependencies:
   flutter_test:
