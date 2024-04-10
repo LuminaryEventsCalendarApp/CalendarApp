@@ -99,7 +99,7 @@ class _CalendarState extends State<Calendar> {
   @override
   Widget build(BuildContext context) {
     final List<Widget> nextSevenDaysEvents = [];
-    fetchData();
+    fetchOrders();
     final DateTime nextWeek = kToday.add(const Duration(days: 7));
     for (int i = 0; i < 7; i++) {
       final DateTime day = kToday.add(Duration(days: i));

@@ -11,7 +11,7 @@ void main() {
   runApp(const MyApp());
 }
 
-Future<void> fetchData() async {
+Future<void> fetchOrders() async {
   try {
     var response = await http.get(Uri.parse(''));
     if (response.statusCode == 200) {
@@ -39,6 +39,26 @@ Future<void> fetchData() async {
     }
   } catch (e) {
     // Handle exception
+    print('Exception: $e');
+  }
+}
+
+Future<void> fetchDevices() async {
+  try {
+    var response = await http.get(Uri.parse(''));
+    if (response.statusCode == 200) {
+      List<dynamic> data = json.decode(response.body);
+      for (var item in data) {
+        print('Id ${item['id']}');
+        print('Name ${item['name']}');
+        print('Description ${item['description']}');
+        print('Current_stock ${item['current_stock']}');
+        print('Price_Per_Day ${item['price_per_day']}');
+      }
+    } else {
+      print('Failed to fetch data: ${response.statusCode}');
+    }
+  } catch (e) {
     print('Exception: $e');
   }
 }
