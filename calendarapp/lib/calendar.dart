@@ -34,7 +34,7 @@ class _CalendarState extends State<Calendar> {
       child: Text('Settings'),
     ),
   ];
-
+  TextEditingController _textFieldController = TextEditingController();
   @override
   void initState() {
     super.initState();
@@ -45,6 +45,7 @@ class _CalendarState extends State<Calendar> {
 
   @override
   void dispose() {
+    _textFieldController.dispose();
     _selectedEvents.dispose();
     super.dispose();
   }
@@ -284,84 +285,97 @@ class _CalendarState extends State<Calendar> {
         ),
       ),
       backgroundColor: Colors.white70,
-      body: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          Expanded(
-            child: SingleChildScrollView(
-              child: SizedBox(
-                height: 340,
-                child: TableCalendar<Event>(
-                  firstDay: kFirstDay,
-                  lastDay: kLastDay,
-                  focusedDay: _focusedDay,
-                  selectedDayPredicate: (day) {
-                    return isSameDay(_selectedDay, day);
-                  },
-                  rangeStartDay: _rangeStart,
-                  rangeEndDay: _rangeEnd,
-                  calendarFormat: _calendarFormat,
-                  rangeSelectionMode: _rangeSelectionMode,
-                  eventLoader: (day) {
-                    return _getEventsForDay(day);
-                  },
-                  startingDayOfWeek: StartingDayOfWeek.monday,
-                  calendarStyle: const CalendarStyle(
-                    outsideDaysVisible: false,
-                  ),
-                  onDaySelected: _onDaySelected,
-                  onRangeSelected: _onRangeSelected,
-                  onFormatChanged: (format) {
-                    if (_calendarFormat != format) {
-                      setState(() {
-                        _calendarFormat = format;
-                      });
-                    }
-                  },
-                  onPageChanged: (focusedDay) {
+      body: CustomScrollView(
+        slivers: [
+          SliverToBoxAdapter(
+            child: SizedBox(
+              height: 340,
+              child: TableCalendar<Event>(
+                firstDay: kFirstDay,
+                lastDay: kLastDay,
+                focusedDay: _focusedDay,
+                selectedDayPredicate: (day) {
+                  return isSameDay(_selectedDay, day);
+                },
+                rangeStartDay: _rangeStart,
+                rangeEndDay: _rangeEnd,
+                calendarFormat: _calendarFormat,
+                rangeSelectionMode: _rangeSelectionMode,
+                eventLoader: (day) {
+                  return _getEventsForDay(day);
+                },
+                startingDayOfWeek: StartingDayOfWeek.monday,
+                calendarStyle: const CalendarStyle(
+                  outsideDaysVisible: false,
+                ),
+                onDaySelected: _onDaySelected,
+                onRangeSelected: _onRangeSelected,
+                onFormatChanged: (format) {
+                  if (_calendarFormat != format) {
                     setState(() {
-                      _focusedDay = focusedDay;
-                      _selectedDay = focusedDay; // Update _selectedDay
-                      _selectedEvents.value = _getEventsForDay(focusedDay);
+                      _calendarFormat = format;
                     });
+                  }
+                },
+                onPageChanged: (focusedDay) {
+                  setState(() {
+                    _focusedDay = focusedDay;
+                    _selectedDay = focusedDay; // Update _selectedDay
+                    _selectedEvents.value = _getEventsForDay(focusedDay);
+                  });
+                },
+              ),
+            ),
+          ),
+          SliverToBoxAdapter(
+            child: Divider(
+              color: Colors.black,
+              thickness: 1.0,
+            ),
+          ),
+          SliverList(
+            delegate: SliverChildListDelegate.fixed([
+              Padding(
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 8, vertical: 10),
+                child: TextField(
+                  controller: _textFieldController,
+                  decoration: const InputDecoration(
+                    border: OutlineInputBorder(),
+                    hintText: 'Uusi tapahtuma',
+                  ),
+                  onChanged: (value) {
+                    setState(() {
+                      _enteredText = value; // Update the entered text
+                    });
+                  },
+                  onSubmitted: (_) {
+                    _addEvent(_selectedDay ?? DateTime.now());
+                    _clearTextField();
                   },
                 ),
               ),
-            ),
-          ),
-          const SizedBox(height: 20),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 10),
-            child: TextField(
-              decoration: const InputDecoration(
-                border: OutlineInputBorder(),
-                hintText: 'Uusi tapahtuma',
+              SizedBox(height: 8.0),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    'Seuraavan viikon tapahtumat:',
+                    style: TextStyle(fontWeight: FontWeight.bold),
+                  ),
+                  SizedBox(height: 8),
+                  ...nextSevenDaysEvents,
+                ],
               ),
-              onChanged: (value) {
-                setState(() {
-                  _enteredText = value; // Update the entered text
-                });
-              },
-              onSubmitted: (_) {
-                _addEvent(_selectedDay ?? DateTime.now());
-              },
-            ),
-          ),
-          const SizedBox(height: 8.0),
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              const Text(
-                'Seuraavan viikon tapahtumat:',
-                style: TextStyle(fontWeight: FontWeight.bold),
-              ),
-              const SizedBox(height: 8),
-              ...nextSevenDaysEvents,
-            ],
+            ]),
           ),
         ],
       ),
     );
+  }
+
+  void _clearTextField() {
+    _textFieldController.clear();
   }
 
   void _addEvent(DateTime selectedDate) {
