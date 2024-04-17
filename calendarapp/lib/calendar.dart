@@ -100,7 +100,7 @@ class _CalendarState extends State<Calendar> {
   @override
   Widget build(BuildContext context) {
     final List<Widget> nextSevenDaysEvents = [];
-    fetchOrders();
+    fetchData();
     final DateTime nextWeek = kToday.add(const Duration(days: 7));
     for (int i = 0; i < 7; i++) {
       final DateTime day = kToday.add(Duration(days: i));
@@ -380,9 +380,21 @@ class _CalendarState extends State<Calendar> {
 
   void _addEvent(DateTime selectedDate) {
     if (kEvents.containsKey(selectedDate)) {
-      kEvents[selectedDate]!.add(Event(_enteredText));
+      kEvents[selectedDate]!.add(Event(
+          customerName: '',
+          title: '',
+          orderStartDate: '',
+          orderLengthDays: 0,
+          orderEndDate: ''));
     } else {
-      kEvents[selectedDate] = [Event(_enteredText)];
+      kEvents[selectedDate] = [
+        Event(
+            customerName: '',
+            title: '',
+            orderEndDate: '',
+            orderStartDate: '',
+            orderLengthDays: 0)
+      ];
     }
 
     setState(() {});
