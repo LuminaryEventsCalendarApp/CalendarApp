@@ -21,42 +21,55 @@ Future<void> fetchData() async {
       kEvents.clear();
       // Parse response and update UI
       for (var item in data) {
-        // Parse relevant fields
-        String orderStartDate = item['order_start_date'];
-        int orderLengthDays = item['order_length_days'];
-        String orderEndDate = item['order_end_date'];
-        String customerName = item['customer_name'];
+        // Parse relevant fields, ensuring they are not null
+        String? orderStartDate = item['order_start_date'];
+        int? orderLengthDays = item['order_length_days'];
+        String? orderEndDate = item['order_end_date'];
+        String? customerName = item['customer_name'];
+        List<Map<String, dynamic>> contents = item['contents'] != null
+            ? List<Map<String, dynamic>>.from(item['contents'])
+            : [];
 
-        // Convert order start date string to DateTime object
-        DateTime startDate = DateTime.parse(orderStartDate);
+        if (orderStartDate != null &&
+            orderEndDate != null &&
+            orderLengthDays != null &&
+            customerName != null) {
+          // Calculate order end date based on order length
+          DateTime startDate =
+              DateTime.parse(orderStartDate.replaceAll('T', ' ').split('.')[0]);
+          DateTime endDate = startDate.add(Duration(days: orderLengthDays));
 
-        // Calculate order end date by adding order length days to start date
-        DateTime endDate = startDate.add(Duration(days: orderLengthDays));
+          String eventTitle = 'Order for $customerName';
+          Event event = Event(
+            title: eventTitle,
+            orderStartDate: orderStartDate,
+            orderLengthDays: orderLengthDays,
+            orderEndDate: endDate.toIso8601String(), // Use calculated end date
+            customerName: customerName,
+            contents: contents,
+          );
 
-        // Create Event object for each order
-        String eventTitle =
-            'Order for $customerName'; // Include customer name in event title
-        Event event = Event(
-          title: eventTitle,
-          orderStartDate: orderStartDate,
-          orderLengthDays: orderLengthDays,
-          orderEndDate: orderEndDate,
-          customerName: customerName,
-        );
+          for (int i = 0; i < orderLengthDays; i++) {
+            DateTime date = startDate.add(Duration(days: i));
+            kEvents.putIfAbsent(date, () => []);
+            kEvents[date]!.add(event);
+          }
 
-        // Add event to kEvents map
-        for (int i = 0; i < orderLengthDays; i++) {
-          DateTime date = startDate.add(Duration(days: i));
-          kEvents.putIfAbsent(date, () => []);
-          kEvents[date]!.add(event);
+          print('Order Start Date: $orderStartDate');
+          print('Order Length Days: $orderLengthDays');
+          print('Order End Date: $endDate');
+          print('Customer Name: $customerName');
+          print('Contents:');
+          for (var content in contents) {
+            print('- Name: ${content["name"]}');
+            print('  Description: ${content["description"]}');
+            print('  Price per day: ${content["price_per_day"]}');
+            print('  Count: ${content["count"]}');
+          }
+          print('\n');
+        } else {
+          print('One or more fields are null in the JSON data');
         }
-
-        // Print parsed data
-        print('Order Start Date: $orderStartDate');
-        print('Order Length Days: $orderLengthDays');
-        print('Order End Date: $orderEndDate');
-        print('Customer Name: $customerName');
-        print('\n');
       }
     } else {
       // Handle error
@@ -74,6 +87,7 @@ class Event {
   final int orderLengthDays;
   final String orderEndDate;
   final String customerName;
+  final List<Map<String, dynamic>> contents;
 
   const Event({
     required this.title,
@@ -81,6 +95,7 @@ class Event {
     required this.orderLengthDays,
     required this.orderEndDate,
     required this.customerName,
+    this.contents = const [], // Provide a default value for contents
   });
 
   @override
@@ -121,6 +136,13 @@ void retrieveEventsForNext7Days() {
         print('- Order Length Days: ${event.orderLengthDays}');
         print('- Order End Date: ${event.orderEndDate}');
         print('- Customer Name: ${event.customerName}');
+        print('Contents:');
+        for (var content in event.contents) {
+          print('- Name: ${content["name"]}');
+          print('  Description: ${content["description"]}');
+          print('  Price per day: ${content["price_per_day"]}');
+          print('  Count: ${content["count"]}');
+        }
       });
     }
   }
