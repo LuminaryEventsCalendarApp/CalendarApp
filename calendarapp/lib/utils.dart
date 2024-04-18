@@ -12,9 +12,29 @@ void main() {
   runApp(const MyApp());
 }
 
+Future<Map<String, dynamic>> fetchMapData(DateTime selectedDay) async {
+  try {
+    // Make the HTTP request to fetch data for the selected day
+    var response = await http.get(Uri.parse(
+        'https://Mekelektro.com/orders?date=${selectedDay.toString()}'));
+
+    if (response.statusCode == 200) {
+      // Parse the response body as JSON
+      Map<String, dynamic> data = json.decode(response.body);
+      return data; // Return the fetched data
+    } else {
+      // If the request fails, throw an exception with the error message
+      throw 'Failed to fetch data: ${response.statusCode}';
+    }
+  } catch (e) {
+    // If an error occurs during the HTTP request, throw an exception with the error message
+    throw 'Exception fetching data: $e';
+  }
+}
+
 Future<void> fetchData() async {
   try {
-    var response = await http.get(Uri.parse(''));
+    var response = await http.get(Uri.parse('https://Mekelektro.com/orders'));
     if (response.statusCode == 200) {
       List<dynamic> data = json.decode(response.body);
       // Clear existing events
@@ -124,8 +144,8 @@ List<DateTime> daysInRange(DateTime first, DateTime last) {
 }
 
 void retrieveEventsForNext7Days() {
-  final DateTime nextWeek = kToday.add(const Duration(days: 7));
-  for (var i = 0; i < 7; i++) {
+  final DateTime nextWeek = kToday.add(const Duration(days: 14));
+  for (var i = 0; i < 14; i++) {
     final DateTime day = kToday.add(Duration(days: i));
     if (kEvents.containsKey(day)) {
       final eventsForDay = kEvents[day]!;
