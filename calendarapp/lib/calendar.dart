@@ -74,38 +74,7 @@ class _CalendarState extends State<Calendar> {
         _rangeSelectionMode = RangeSelectionMode.toggledOff;
       });
 
-      // Call fetchData and show dialog with fetched data
-      fetchMapData(selectedDay).then((data) {
-        // Show a dialog with the fetched data
-        showDialog(
-          context: context,
-          builder: (BuildContext context) {
-            return AlertDialog(
-              title: Text(
-                  'Tapahtuman tiedot ${selectedDay.day}/${selectedDay.month}'),
-              content: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Text('Fetched data: $data'),
-                  // Add more widgets to display the fetched data here
-                ],
-              ),
-              actions: <Widget>[
-                TextButton(
-                  onPressed: () {
-                    Navigator.of(context).pop();
-                  },
-                  child: const Text('Sulje'),
-                ),
-              ],
-            );
-          },
-        );
-      }).catchError((error) {
-        // Handle error if data fetching fails
-        print('Error fetching data: $error');
-      });
+      _selectedEvents.value = _getEventsForDay(selectedDay);
     }
   }
 
@@ -144,38 +113,29 @@ class _CalendarState extends State<Calendar> {
           ),
         );
         for (final event in eventsForDay) {
-          DateTime selectedDay = day;
           nextSevenDaysEvents.add(Padding(
               padding: const EdgeInsets.symmetric(vertical: 8),
               child: GestureDetector(
                 onTap: () {
-                  // Show dialog with detailed event information
                   showDialog(
                     context: context,
                     builder: (BuildContext context) {
                       return AlertDialog(
-                        title: Text(
-                            'Tapahtuman tiedot ${selectedDay.day}/${selectedDay.month}'),
+                        title:
+                            Text('Tapahtuman tiedot ${day.day}/${day.month}'),
                         content: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           mainAxisSize: MainAxisSize.min,
                           children: [
                             Text(
-                                'Tapahtumat päivänä ${selectedDay.day}/${selectedDay.month}:'),
-                            SizedBox(height: 16),
-                            for (final event in eventsForDay)
-                              Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text('Tapahtuman nimi: ${event.title}'),
-                                  Text('Asiakas: ${event.customerName}'),
-                                  Text('Tilauspäivä: ${event.orderStartDate}'),
-                                  Text(
-                                      'Tilauspituus päivinä: ${event.orderLengthDays}'),
-                                  Text('Tilauspäättyy: ${event.orderEndDate}'),
-                                  SizedBox(height: 16),
-                                ],
+                                'Tarvittavat paketit tapahtumaan: ${event.title}'),
+                            const SizedBox(height: 16),
+                            const Text(
+                              'Paketti',
+                              style: TextStyle(
+                                fontWeight: FontWeight.bold,
                               ),
+                            ),
                           ],
                         ),
                         actions: <Widget>[
