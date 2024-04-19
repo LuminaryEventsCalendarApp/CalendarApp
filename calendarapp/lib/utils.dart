@@ -1,37 +1,95 @@
-// ignore_for_file: avoid_print, avoid_function_literals_in_foreach_calls
+// ignore_for_file: avoid_print, avoid_function_literals_in_foreach_calls, unused_local_variable
+
 import 'dart:convert';
 import 'dart:collection';
+import 'package:calendarapp/calendar.dart';
 import 'package:http/http.dart' as http;
-import 'package:calendarapp/main.dart';
 import 'package:flutter/material.dart';
 import 'package:table_calendar/table_calendar.dart';
 
 void main() {
-  retrieveEventsForNext7Days(); // Added this line to call the function
+  fetchData(); // Changed this line to call the fetchData function
   runApp(const MyApp());
 }
 
-Future<void> fetchOrders() async {
+Future<Map<String, dynamic>> fetchMapData(DateTime selectedDay) async {
+  try {
+    // Make the HTTP request to fetch data for the selected day
+    var response =
+        await http.get(Uri.parse('PlaceHolder${selectedDay.toString()}'));
+
+    if (response.statusCode == 200) {
+      // Parse the response body as JSON
+      Map<String, dynamic> data = json.decode(response.body);
+      return data; // Return the fetched data
+    } else {
+      // If the request fails, throw an exception with the error message
+      throw 'Failed to fetch data: ${response.statusCode}';
+    }
+  } catch (e) {
+    // If an error occurs during the HTTP request, throw an exception with the error message
+    throw 'Exception fetching data: $e';
+  }
+}
+
+Future<void> fetchData() async {
   try {
     var response = await http.get(Uri.parse(''));
     if (response.statusCode == 200) {
       List<dynamic> data = json.decode(response.body);
+      // Clear existing events
+      kEvents.clear();
       // Parse response and update UI
       for (var item in data) {
-        print('Id: ${item['id']}');
-        print('Total Price: ${item['total_price']}');
-        print('Order Created At: ${item['order_created_at']}');
-        print('Order Start Date: ${item['order_start_date']}');
-        print('Order Length Days: ${item['order_length_days']}');
-        print('Order End Date: ${item['order_end_date']}');
-        print('Payment Due Date: ${item['payment_due_date']}');
-        print('Customer Name: ${item['customer_name']}');
-        print('Customer Phone Number: ${item['customer_phone_number']}');
-        print('Customer Email: ${item['customer_email']}');
-        print('Order Status: ${item['order_status']}');
-        print('Payment Resolved: ${item['payment_resolved']}');
-        print('Contents: ${item['contents']}');
-        print('\n'); // Add a line break after each item
+        // Parse relevant fields, ensuring they are not null
+        String? orderStartDate = item['order_start_date'];
+        int? orderLengthDays = item['order_length_days'];
+        String? orderEndDate = item['order_end_date'];
+        String? customerName = item['customer_name'];
+        List<Map<String, dynamic>> contents = item['contents'] != null
+            ? List<Map<String, dynamic>>.from(item['contents'])
+            : [];
+
+        if (orderStartDate != null &&
+            orderEndDate != null &&
+            orderLengthDays != null &&
+            customerName != null) {
+          // Calculate order end date based on order length
+          DateTime startDate =
+              DateTime.parse(orderStartDate.replaceAll('T', ' ').split('.')[0]);
+          DateTime endDate = startDate.add(Duration(days: orderLengthDays));
+
+          String eventTitle = 'Order for $customerName';
+          Event event = Event(
+            title: eventTitle,
+            orderStartDate: orderStartDate,
+            orderLengthDays: orderLengthDays,
+            orderEndDate: endDate.toIso8601String(), // Use calculated end date
+            customerName: customerName,
+            contents: contents,
+          );
+
+          for (int i = 0; i < orderLengthDays; i++) {
+            DateTime date = startDate.add(Duration(days: i));
+            kEvents.putIfAbsent(date, () => []);
+            kEvents[date]!.add(event);
+          }
+
+          print('Order Start Date: $orderStartDate');
+          print('Order Length Days: $orderLengthDays');
+          print('Order End Date: $endDate');
+          print('Customer Name: $customerName');
+          print('Contents:');
+          for (var content in contents) {
+            print('- Name: ${content["name"]}');
+            print('  Description: ${content["description"]}');
+            print('  Price per day: ${content["price_per_day"]}');
+            print('  Count: ${content["count"]}');
+          }
+          print('\n');
+        } else {
+          print('One or more fields are null in the JSON data');
+        }
       }
     } else {
       // Handle error
@@ -43,31 +101,22 @@ Future<void> fetchOrders() async {
   }
 }
 
-Future<void> fetchDevices() async {
-  try {
-    var response = await http.get(Uri.parse(''));
-    if (response.statusCode == 200) {
-      List<dynamic> data = json.decode(response.body);
-      for (var item in data) {
-        print('Id ${item['id']}');
-        print('Name ${item['name']}');
-        print('Description ${item['description']}');
-        print('Current_stock ${item['current_stock']}');
-        print('Price_Per_Day ${item['price_per_day']}');
-      }
-    } else {
-      print('Failed to fetch data: ${response.statusCode}');
-    }
-  } catch (e) {
-    print('Exception: $e');
-  }
-}
-
-/// Example event class.
 class Event {
   final String title;
+  final String orderStartDate;
+  final int orderLengthDays;
+  final String orderEndDate;
+  final String customerName;
+  final List<Map<String, dynamic>> contents;
 
-  const Event(this.title);
+  const Event({
+    required this.title,
+    required this.orderStartDate,
+    required this.orderLengthDays,
+    required this.orderEndDate,
+    required this.customerName,
+    this.contents = const [], // Provide a default value for contents
+  });
 
   @override
   String toString() => title;
@@ -95,7 +144,6 @@ List<DateTime> daysInRange(DateTime first, DateTime last) {
 }
 
 void retrieveEventsForNext7Days() {
-  // ignore: unused_local_variable
   final DateTime nextWeek = kToday.add(const Duration(days: 7));
   for (var i = 0; i < 7; i++) {
     final DateTime day = kToday.add(Duration(days: i));
@@ -104,6 +152,17 @@ void retrieveEventsForNext7Days() {
       print('Events for $day:');
       eventsForDay.forEach((event) {
         print('- ${event.title}');
+        print('- Order Start Date: ${event.orderStartDate}');
+        print('- Order Length Days: ${event.orderLengthDays}');
+        print('- Order End Date: ${event.orderEndDate}');
+        print('- Customer Name: ${event.customerName}');
+        print('Contents:');
+        for (var content in event.contents) {
+          print('- Name: ${content["name"]}');
+          print('  Description: ${content["description"]}');
+          print('  Price per day: ${content["price_per_day"]}');
+          print('  Count: ${content["count"]}');
+        }
       });
     }
   }
@@ -112,3 +171,18 @@ void retrieveEventsForNext7Days() {
 final kToday = DateTime.now();
 final kFirstDay = DateTime(kToday.year, kToday.month - 3, kToday.day);
 final kLastDay = DateTime(kToday.year, kToday.month + 3, kToday.day);
+
+class MyApp extends StatelessWidget {
+  const MyApp({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      title: 'Calendar App',
+      theme: ThemeData(
+        primarySwatch: Colors.blue,
+      ),
+      home: const Calendar(),
+    );
+  }
+}
