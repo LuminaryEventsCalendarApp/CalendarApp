@@ -10,7 +10,7 @@ class MyTextField extends StatelessWidget {
     required this.controller,
     required this.hintText,
     required this.obscureText,
-    });
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -26,7 +26,7 @@ class MyTextField extends StatelessWidget {
           focusedBorder: const OutlineInputBorder(
             borderSide: BorderSide(color: Colors.black),
           ),
-          fillColor: Colors.grey,
+          fillColor: Colors.white,
           filled: true,
           hintText: hintText,
         ),

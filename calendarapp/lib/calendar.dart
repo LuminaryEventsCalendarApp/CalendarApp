@@ -19,8 +19,8 @@ class _CalendarState extends State<Calendar> {
   String _enteredText = '';
   late final ValueNotifier<List<Event>> _selectedEvents;
   CalendarFormat _calendarFormat = CalendarFormat.month;
-  RangeSelectionMode _rangeSelectionMode =
-      RangeSelectionMode.toggledOff; // Can be toggled on/off by longpressing a date
+  RangeSelectionMode _rangeSelectionMode = RangeSelectionMode
+      .toggledOff; // Can be toggled on/off by longpressing a date
   DateTime _focusedDay = DateTime.now();
   DateTime? _selectedDay;
   DateTime? _rangeStart;
@@ -66,58 +66,57 @@ class _CalendarState extends State<Calendar> {
     ];
   }
 
-void _onDaySelected(DateTime selectedDay, DateTime focusedDay) {
-  if (!isSameDay(_selectedDay, selectedDay)) {
-    setState(() {
-      _selectedDay = selectedDay;
-      _focusedDay = focusedDay;
-      _rangeStart = null; // Important to clean those
-      _rangeEnd = null;
-      _rangeSelectionMode = RangeSelectionMode.toggledOff;
-    });
+  void _onDaySelected(DateTime selectedDay, DateTime focusedDay) {
+    if (!isSameDay(_selectedDay, selectedDay)) {
+      setState(() {
+        _selectedDay = selectedDay;
+        _focusedDay = focusedDay;
+        _rangeStart = null; // Important to clean those
+        _rangeEnd = null;
+        _rangeSelectionMode = RangeSelectionMode.toggledOff;
+      });
 
-    // Retrieve events for the selected day
-    List<Event> eventsForSelectedDay = _getEventsForDay(selectedDay);
+      // Retrieve events for the selected day
+      List<Event> eventsForSelectedDay = _getEventsForDay(selectedDay);
 
-    // Customize the content of the dialog with the events for the selected day
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: Text(
-            'Tapahtumat: ${selectedDay.day}/${selectedDay.month}',
-          ),
-          content: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Text(
-                'You selected the date ${selectedDay.day}/${selectedDay.month}.', // Customize the dialog content here
-              ),
-              SizedBox(height: 16),
-              Text(
-                'Events for selected day:',
-                style: TextStyle(fontWeight: FontWeight.bold),
-              ),
-              SizedBox(height: 8),
-              // Display events for the selected day
-              ...eventsForSelectedDay.map((event) => Text(event.title)),
-            ],
-          ),
-          actions: <Widget>[
-            TextButton(
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-              child: const Text('Close'),
+      // Customize the content of the dialog with the events for the selected day
+      showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: Text(
+              'Tapahtumat: ${selectedDay.day}/${selectedDay.month}',
             ),
-          ],
-        );
-      },
-    );
+            content: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Text(
+                  'You selected the date ${selectedDay.day}/${selectedDay.month}.', // Customize the dialog content here
+                ),
+                SizedBox(height: 16),
+                Text(
+                  'Events for selected day:',
+                  style: TextStyle(fontWeight: FontWeight.bold),
+                ),
+                SizedBox(height: 8),
+                // Display events for the selected day
+                ...eventsForSelectedDay.map((event) => Text(event.title)),
+              ],
+            ),
+            actions: <Widget>[
+              TextButton(
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+                child: const Text('Close'),
+              ),
+            ],
+          );
+        },
+      );
+    }
   }
-}
-
 
   void _onRangeSelected(DateTime? start, DateTime? end, DateTime focusedDay) {
     setState(() {
@@ -334,7 +333,7 @@ void _onDaySelected(DateTime selectedDay, DateTime focusedDay) {
           ],
         ),
       ),
-      backgroundColor: Colors.white70,
+      backgroundColor: Colors.white,
       body: CustomScrollView(
         slivers: [
           SliverToBoxAdapter(
@@ -413,7 +412,7 @@ void _onDaySelected(DateTime selectedDay, DateTime focusedDay) {
                     'Seuraavan viikon tapahtumat:',
                     style: TextStyle(fontWeight: FontWeight.bold),
                   ),
-                  SizedBox(height: 8),
+                  SizedBox(height: 5),
                   ...nextSevenDaysEvents,
                 ],
               ),

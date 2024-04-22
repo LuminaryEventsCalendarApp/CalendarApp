@@ -93,27 +93,27 @@ class _LoginPageState extends State<LoginPage> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  const Text("Login to the App",
-                      style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 30,
-                          fontWeight: FontWeight.w800)),
-                  const SizedBox(
-                    height: 28,
+                  const SizedBox(height: 50),
+                  // username
+                  MyTextField(
+                    controller: emailController,
+                    hintText: 'Email',
+                    obscureText: false,
                   ),
-                  const Text("Use your fingerprint to log into the app",
-                      style: TextStyle(
-                        color: Colors.white,
-                      )),
-                  const SizedBox(
-                    height: 28,
+                  const SizedBox(height: 20),
+                  // password
+                  MyTextField(
+                    controller: passwordController,
+                    hintText: 'Password',
+                    obscureText: true,
                   ),
-                  const Divider(
-                    color: Colors.white60,
+                  const SizedBox(height: 20),
+                  // sign in button
+                  MyButton(
+                    onTap: signUserIn,
                   ),
-                  const SizedBox(
-                    height: 28,
-                  ),
+                  const SizedBox(height: 30),
+
                   ElevatedButton.icon(
                     onPressed: () async {
                       bool auth = await Authentication.authentication();
@@ -130,25 +130,6 @@ class _LoginPageState extends State<LoginPage> {
                     icon: const Icon(Icons.fingerprint),
                     label: const Text("Authenticate"),
                   ),
-                  const SizedBox(height: 50),
-                  // username
-                  MyTextField(
-                    controller: emailController,
-                    hintText: 'Username',
-                    obscureText: false,
-                  ),
-                  // const SizedBox(height: 10),
-                  // password
-                  MyTextField(
-                    controller: passwordController,
-                    hintText: 'Password',
-                    obscureText: true,
-                  ),
-                  // sign in button
-                  MyButton(
-                    onTap: signUserIn,
-                  ),
-                  const SizedBox(height: 50),
                 ],
               ),
             ),

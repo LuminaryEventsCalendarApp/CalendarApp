@@ -69,7 +69,8 @@ Future<Map<String, dynamic>> fetchMapData(DateTime selectedDay) async {
 // Function to fetch event data
 Future<void> fetchData() async {
   try {
-    var response = await http.get(Uri.parse('https://mekelektro.com/orders?date='));
+    var response =
+        await http.get(Uri.parse('https://mekelektro.com/orders?date='));
     if (response.statusCode == 200) {
       List<dynamic> data = json.decode(response.body);
       kEvents.clear();
@@ -84,7 +85,8 @@ Future<void> fetchData() async {
         if (contentsData != null) {
           if (contentsData is List<dynamic>) {
             // Handle the case where contentsData is a list
-            contents = List<Map<String, dynamic>>.from(contentsData.cast<Map<String, dynamic>>());
+            contents = List<Map<String, dynamic>>.from(
+                contentsData.cast<Map<String, dynamic>>());
           } else {
             // Handle other scenarios, like if contentsData is a single map or other types
             // You can add custom logic here based on your requirements
@@ -96,7 +98,8 @@ Future<void> fetchData() async {
             orderEndDate != null &&
             orderLengthDays != null &&
             customerName != null) {
-          DateTime startDate = DateTime.parse(orderStartDate.replaceAll('T', ' ').split('.')[0]);
+          DateTime startDate =
+              DateTime.parse(orderStartDate.replaceAll('T', ' ').split('.')[0]);
           DateTime endDate = startDate.add(Duration(days: orderLengthDays));
 
           String eventTitle = 'Order for $customerName';
@@ -125,10 +128,6 @@ Future<void> fetchData() async {
     print('Exception: $e');
   }
 }
-
-
-
-
 
 // Function to retrieve events for the next 7 days
 void retrieveEventsForNext7Days() {

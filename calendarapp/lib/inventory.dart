@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'calendar.dart';
 import 'settings.dart';
@@ -21,7 +20,6 @@ class Inventory extends StatelessWidget {
   }
 }
 
-
 class MyInventoryPage extends StatefulWidget {
   const MyInventoryPage({Key? key}) : super(key: key);
 
@@ -40,13 +38,20 @@ class _MyInventoryPageState extends State<MyInventoryPage> {
 
   void initializeExampleDevices() {
     devices = [
-      {'name': 'Device 1', 'quantity': 10, 'description': 'Description of Device 1'},
-      {'name': 'Device 2', 'quantity': 5, 'description': 'Description of Device 2'},
+      {
+        'name': 'Device 1',
+        'quantity': 10,
+        'description': 'Description of Device 1'
+      },
+      {
+        'name': 'Device 2',
+        'quantity': 5,
+        'description': 'Description of Device 2'
+      },
     ];
   }
 
-
- /*
+  /*
 //Hakee laitteet databasesta
   Future<void> fetchData() async {
     try {
@@ -137,38 +142,31 @@ class _MyInventoryPageState extends State<MyInventoryPage> {
   }
 }
 */
-    //Asetukset toiminto laitteille
-   void _showOptionsDialog(BuildContext context, Map<String, dynamic> device) {
-  showDialog(
-    context: context,
-    builder: (BuildContext context) {
-      return AlertDialog(
-        title: Text(device['name']),
-        content: Text('Asetukset laitteelle ${device['name']}'),
-        actions: <Widget>[
-          TextButton(
-            onPressed: () {
-              // Add your option action here
-              // For example, you can delete the device
-              // Delete device
-               // deleteDevice(device['device']);
+  //Asetukset toiminto laitteille
+  void _showOptionsDialog(BuildContext context, Map<String, dynamic> device) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text(device['name']),
+          content: Text('Asetukset laitteelle ${device['name']}'),
+          actions: <Widget>[
+            TextButton(
+              onPressed: () {
+                // Add your option action here
+                // For example, you can delete the device
+                // Delete device
+                // deleteDevice(device['device']);
                 Navigator.pop(context);
-              
-            },
-            child: Text('Poista laite'),
-          ),
-          // Add more options as needed
-        ],
-      );
-    },
-  );
-}
-  
-
-
-
-
-  
+              },
+              child: Text('Poista laite'),
+            ),
+            // Add more options as needed
+          ],
+        );
+      },
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -176,8 +174,8 @@ class _MyInventoryPageState extends State<MyInventoryPage> {
       appBar: AppBar(
         iconTheme: const IconThemeData(color: Colors.white),
         backgroundColor: Colors.black,
-        title: const Text('Tavaraluettelo', style: TextStyle(color: Colors.white)),
-
+        title:
+            const Text('Tavaraluettelo', style: TextStyle(color: Colors.white)),
       ),
       drawer: Drawer(
         backgroundColor: Colors.black,
@@ -187,7 +185,8 @@ class _MyInventoryPageState extends State<MyInventoryPage> {
             const DrawerHeader(
               decoration: BoxDecoration(
                 image: DecorationImage(
-                  image: AssetImage('assets/luminaryevents.png'), // Your background image
+                  image: AssetImage(
+                      'assets/luminaryevents.png'), // Your background image
                   fit: BoxFit.cover,
                 ),
               ),
@@ -201,7 +200,8 @@ class _MyInventoryPageState extends State<MyInventoryPage> {
             ),
             ListTile(
               leading: const Icon(Icons.calendar_today, color: Colors.white),
-              title: const Text('Kalenteri', style: TextStyle(color: Colors.white)),
+              title: const Text('Kalenteri',
+                  style: TextStyle(color: Colors.white)),
               onTap: () {
                 Navigator.push(
                   context,
@@ -211,7 +211,8 @@ class _MyInventoryPageState extends State<MyInventoryPage> {
             ),
             ListTile(
               leading: const Icon(Icons.inventory, color: Colors.white),
-              title: const Text('Tavaraluettelo', style: TextStyle(color: Colors.white)),
+              title: const Text('Tavaraluettelo',
+                  style: TextStyle(color: Colors.white)),
               onTap: () {
                 Navigator.pop(context);
                 // No need to navigate to Inventory screen again since we're already on it
@@ -219,7 +220,8 @@ class _MyInventoryPageState extends State<MyInventoryPage> {
             ),
             ListTile(
               leading: const Icon(Icons.settings, color: Colors.white),
-              title: const Text('Asetukset', style: TextStyle(color: Colors.white)),
+              title: const Text('Asetukset',
+                  style: TextStyle(color: Colors.white)),
               onTap: () {
                 Navigator.pop(context);
                 Navigator.push(
@@ -230,7 +232,8 @@ class _MyInventoryPageState extends State<MyInventoryPage> {
             ),
             ListTile(
               leading: const Icon(Icons.shopping_cart, color: Colors.white),
-              title: const Text('Uudet tilaukset', style: TextStyle(color: Colors.white)),
+              title: const Text('Uudet tilaukset',
+                  style: TextStyle(color: Colors.white)),
               onTap: () {
                 Navigator.pop(context);
                 Navigator.push(
@@ -253,7 +256,7 @@ class _MyInventoryPageState extends State<MyInventoryPage> {
           ],
         ),
       ),
-        body: Column(
+      body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Padding(
@@ -263,7 +266,8 @@ class _MyInventoryPageState extends State<MyInventoryPage> {
               children: [
                 Text('Kalusto', style: TextStyle(fontWeight: FontWeight.bold)),
                 Spacer(), // Add Spacer widget here
-          Text('Kappalemäärä', style: TextStyle(fontWeight: FontWeight.bold)),
+                Text('Kappalemäärä',
+                    style: TextStyle(fontWeight: FontWeight.bold)),
               ],
             ),
           ),
@@ -272,56 +276,60 @@ class _MyInventoryPageState extends State<MyInventoryPage> {
               color: const Color.fromARGB(255, 100, 99, 99),
               child: devices != null
                   ? ListView.builder(
-                itemCount: devices!.length,
-                itemBuilder: (BuildContext context, int index) {
-                  final device = devices![index];
-                  return Container(
-                    margin: const EdgeInsets.all(8.0),
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      border: Border.all(color: const Color.fromARGB(255, 0, 0, 0)),
-                      borderRadius: BorderRadius.circular(8.0),
-                    ),
-                    child: ListTile(
-                      title: Text(device['name']),
-                      subtitle: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(device['description'] != null ? '${device['description']}' : 'NULL'),
-                        ],
-                      ),
-                      trailing: Row(
-          mainAxisSize: MainAxisSize.min,
-          children: [Text(
-              (device['total_stock'] != null ? '${device['total_stock']}' : 'NULL'),
-              style: const TextStyle(
-                fontWeight: FontWeight.bold,
-                fontSize: 18,
-                      ),
-                      ),
-            IconButton(
-              icon: Icon(Icons.more_vert),
-              onPressed: () {
-                // Add your options action here
-                // For example, you can show a bottom sheet or navigate to a details screen
-                _showOptionsDialog(context, device);
-              },
-            ),
-            
-                        
-                    ],
-                    ),
-                    ),
-                  );
-                },
-              )
+                      itemCount: devices!.length,
+                      itemBuilder: (BuildContext context, int index) {
+                        final device = devices![index];
+                        return Container(
+                          margin: const EdgeInsets.all(8.0),
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            border: Border.all(
+                                color: const Color.fromARGB(255, 0, 0, 0)),
+                            borderRadius: BorderRadius.circular(8.0),
+                          ),
+                          child: ListTile(
+                            title: Text(device['name']),
+                            subtitle: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(device['description'] != null
+                                    ? '${device['description']}'
+                                    : 'NULL'),
+                              ],
+                            ),
+                            trailing: Row(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                Text(
+                                  (device['total_stock'] != null
+                                      ? '${device['total_stock']}'
+                                      : 'NULL'),
+                                  style: const TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 18,
+                                  ),
+                                ),
+                                IconButton(
+                                  icon: Icon(Icons.more_vert),
+                                  onPressed: () {
+                                    // Add your options action here
+                                    // For example, you can show a bottom sheet or navigate to a details screen
+                                    _showOptionsDialog(context, device);
+                                  },
+                                ),
+                              ],
+                            ),
+                          ),
+                        );
+                      },
+                    )
                   : devices == null
-                  ? const Center(
-                child: CircularProgressIndicator(),
-              )
-                  : const Center(
-                child: Text('Failed to fetch data'),
-              ),
+                      ? const Center(
+                          child: CircularProgressIndicator(),
+                        )
+                      : const Center(
+                          child: Text('Failed to fetch data'),
+                        ),
             ),
           ),
         ],
@@ -337,14 +345,12 @@ class _MyInventoryPageState extends State<MyInventoryPage> {
       ),
     );
   }
+
   Future<void> _showAddDeviceDialog(BuildContext context) async {
-    
     final TextEditingController nameController = TextEditingController();
     final TextEditingController descriptionController = TextEditingController();
     final TextEditingController pricePerDayController = TextEditingController();
     final TextEditingController quantityController = TextEditingController();
-    
-    
 
     await showDialog(
       context: context,
@@ -355,7 +361,6 @@ class _MyInventoryPageState extends State<MyInventoryPage> {
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
-                
                 TextField(
                   controller: nameController,
                   decoration: InputDecoration(labelText: 'Nimi'),
@@ -372,8 +377,6 @@ class _MyInventoryPageState extends State<MyInventoryPage> {
                   controller: quantityController,
                   decoration: InputDecoration(labelText: 'Kappalemäärä'),
                 ),
-                
-                
               ],
             ),
           ),
@@ -387,16 +390,14 @@ class _MyInventoryPageState extends State<MyInventoryPage> {
             TextButton(
               onPressed: () {
                 final newDevice = {
-                  
                   'name': nameController.text,
                   'description': descriptionController.text,
-                  'price_per_day': double.tryParse(pricePerDayController.text) ?? 0.0,
+                  'price_per_day':
+                      double.tryParse(pricePerDayController.text) ?? 0.0,
                   'total_stock': int.tryParse(quantityController.text) ?? 0,
-                  
-                  
                 };
                 // Add the new device
-               // addDevice(newDevice);
+                // addDevice(newDevice);
                 Navigator.of(context).pop();
               },
               child: Text('Lisää'),
