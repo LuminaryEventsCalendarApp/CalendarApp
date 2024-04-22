@@ -186,7 +186,13 @@ void _onDaySelected(DateTime selectedDay, DateTime focusedDay) {
                                   SizedBox(height: 16),
                                 ],
                               ),
-                          ],
+                              ElevatedButton(
+                                onPressed: (){
+                                  _deleteEventsForDay(selectedDay);
+                                  Navigator.of(context).pop();
+                                },
+                                child: const Text('Poista tapahtuma'),
+                        )],
                         ),
                         actions: <Widget>[
                           TextButton(
@@ -423,6 +429,11 @@ void _onDaySelected(DateTime selectedDay, DateTime focusedDay) {
       ),
     );
   }
+  void _deleteEventsForDay(DateTime day) {
+  setState(() {
+    kEvents.remove(day);
+  });
+}
 
   void _clearTextField() {
     _textFieldController.clear();
