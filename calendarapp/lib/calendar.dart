@@ -1,3 +1,5 @@
+// ignore_for_file: unused_field, library_private_types_in_public_api, prefer_const_constructors
+
 import 'package:calendarapp/new_orders.dart';
 import 'package:flutter/material.dart';
 import 'package:table_calendar/table_calendar.dart';
@@ -7,7 +9,7 @@ import 'inventory.dart';
 import '../utils.dart';
 
 class Calendar extends StatefulWidget {
-  const Calendar({super.key});
+  const Calendar({Key? key}) : super(key: key);
 
   @override
   _CalendarState createState() => _CalendarState();
@@ -17,8 +19,8 @@ class _CalendarState extends State<Calendar> {
   String _enteredText = '';
   late final ValueNotifier<List<Event>> _selectedEvents;
   CalendarFormat _calendarFormat = CalendarFormat.month;
-  RangeSelectionMode _rangeSelectionMode = RangeSelectionMode
-      .toggledOff; // Can be toggled on/off by longpressing a date
+  RangeSelectionMode _rangeSelectionMode =
+      RangeSelectionMode.toggledOff; // Can be toggled on/off by longpressing a date
   DateTime _focusedDay = DateTime.now();
   DateTime? _selectedDay;
   DateTime? _rangeStart;
@@ -64,50 +66,58 @@ class _CalendarState extends State<Calendar> {
     ];
   }
 
-  void _onDaySelected(DateTime selectedDay, DateTime focusedDay) {
-    if (!isSameDay(_selectedDay, selectedDay)) {
-      setState(() {
-        _selectedDay = selectedDay;
-        _focusedDay = focusedDay;
-        _rangeStart = null; // Important to clean those
-        _rangeEnd = null;
-        _rangeSelectionMode = RangeSelectionMode.toggledOff;
-      });
+void _onDaySelected(DateTime selectedDay, DateTime focusedDay) {
+  if (!isSameDay(_selectedDay, selectedDay)) {
+    setState(() {
+      _selectedDay = selectedDay;
+      _focusedDay = focusedDay;
+      _rangeStart = null; // Important to clean those
+      _rangeEnd = null;
+      _rangeSelectionMode = RangeSelectionMode.toggledOff;
+    });
 
-      // Call fetchData and show dialog with fetched data
-      fetchMapData(selectedDay).then((data) {
-        // Show a dialog with the fetched data
-        showDialog(
-          context: context,
-          builder: (BuildContext context) {
-            return AlertDialog(
-              title: Text(
-                  'Tapahtuman tiedot ${selectedDay.day}/${selectedDay.month}'),
-              content: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Text('Fetched data: $data'),
-                  // Add more widgets to display the fetched data here
-                ],
+    // Retrieve events for the selected day
+    List<Event> eventsForSelectedDay = _getEventsForDay(selectedDay);
+
+    // Customize the content of the dialog with the events for the selected day
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text(
+            'Tapahtumat: ${selectedDay.day}/${selectedDay.month}',
+          ),
+          content: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Text(
+                'You selected the date ${selectedDay.day}/${selectedDay.month}.', // Customize the dialog content here
               ),
-              actions: <Widget>[
-                TextButton(
-                  onPressed: () {
-                    Navigator.of(context).pop();
-                  },
-                  child: const Text('Sulje'),
-                ),
-              ],
-            );
-          },
+              SizedBox(height: 16),
+              Text(
+                'Events for selected day:',
+                style: TextStyle(fontWeight: FontWeight.bold),
+              ),
+              SizedBox(height: 8),
+              // Display events for the selected day
+              ...eventsForSelectedDay.map((event) => Text(event.title)),
+            ],
+          ),
+          actions: <Widget>[
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: const Text('Close'),
+            ),
+          ],
         );
-      }).catchError((error) {
-        // Handle error if data fetching fails
-        print('Error fetching data: $error');
-      });
-    }
+      },
+    );
   }
+}
+
 
   void _onRangeSelected(DateTime? start, DateTime? end, DateTime focusedDay) {
     setState(() {
