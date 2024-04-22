@@ -112,7 +112,7 @@ class _MySettingsPage extends State<MySettingsPage> {
               leading: const Icon(Icons.calendar_today, color: Colors.white),
               title: const Text(
                 'Kalenteri',
-                style: TextStyle(color: Colors.white),
+                style: TextStyle(color: Color.fromARGB(255, 247, 246, 246)),
               ),
               onTap: () {
                 Navigator.push(
