@@ -5,7 +5,6 @@ import 'package:flutter/material.dart';
 import 'package:table_calendar/table_calendar.dart';
 import 'settings.dart';
 import 'inventory.dart';
-
 import '../utils.dart';
 
 class Calendar extends StatefulWidget {
@@ -185,13 +184,14 @@ class _CalendarState extends State<Calendar> {
                                   SizedBox(height: 16),
                                 ],
                               ),
-                              ElevatedButton(
-                                onPressed: (){
-                                  _deleteEventsForDay(selectedDay);
-                                  Navigator.of(context).pop();
-                                },
-                                child: const Text('Poista tapahtuma'),
-                        )],
+                            ElevatedButton(
+                              onPressed: () {
+                                _deleteEventsForDay(selectedDay);
+                                Navigator.of(context).pop();
+                              },
+                              child: const Text('Poista tapahtuma'),
+                            )
+                          ],
                         ),
                         actions: <Widget>[
                           TextButton(
@@ -211,9 +211,9 @@ class _CalendarState extends State<Calendar> {
                     onPressed: null,
                     style: ButtonStyle(
                       minimumSize:
-                          MaterialStateProperty.all(const Size(125, 30)),
+                          MaterialStateProperty.all(const Size(200, 30)),
                       maximumSize:
-                          MaterialStateProperty.all(const Size(125, 30)),
+                          MaterialStateProperty.all(const Size(200, 30)),
                       shape: MaterialStateProperty.all(
                         RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(7),
@@ -221,7 +221,7 @@ class _CalendarState extends State<Calendar> {
                         ),
                       ),
                       padding: MaterialStateProperty.all(
-                        const EdgeInsets.symmetric(vertical: 5, horizontal: 5),
+                        const EdgeInsets.symmetric(vertical: 1, horizontal: 1),
                       ),
                       backgroundColor: MaterialStateProperty.all(Colors.white),
                       textStyle: MaterialStateProperty.all(
@@ -418,7 +418,7 @@ class _CalendarState extends State<Calendar> {
                     'Seuraavan viikon tapahtumat:',
                     style: TextStyle(fontWeight: FontWeight.bold),
                   ),
-                  SizedBox(height: 5),
+                  SizedBox(height: 3),
                   ...nextSevenDaysEvents,
                 ],
               ),
@@ -428,11 +428,12 @@ class _CalendarState extends State<Calendar> {
       ),
     );
   }
+
   void _deleteEventsForDay(DateTime day) {
-  setState(() {
-    kEvents.remove(day);
-  });
-}
+    setState(() {
+      kEvents.remove(day);
+    });
+  }
 
   void _clearTextField() {
     _textFieldController.clear();

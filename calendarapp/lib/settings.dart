@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'calendar.dart';
 import 'inventory.dart';
 import 'new_orders.dart';
+import 'home_page.dart';
 
 void main() {
   runApp(const Settings());
@@ -30,10 +31,6 @@ class Settings extends StatelessWidget {
       home: const MySettingsPage(title: 'Flutter Demo Home Page'),
     );
   }
-}
-
-void signUserOut() {
-  FirebaseAuth.instance.signOut();
 }
 
 class MySettingsPage extends StatefulWidget {
@@ -67,6 +64,7 @@ class _MySettingsPage extends State<MySettingsPage> {
       Center(
         child: Text('Settings'),
       ),
+      Center(child: Text('Logout'))
     ];
 
     /// The currently selected index of the bar
@@ -80,9 +78,7 @@ class _MySettingsPage extends State<MySettingsPage> {
       appBar: AppBar(
         // Here we take the value from the MyHomePage object that was created by
         // the App.build method, and use it to set our appbar title.
-        actions: const [
-          IconButton(onPressed: signUserOut, icon: Icon(Icons.logout)),
-        ],
+        actions: const [],
         iconTheme: const IconThemeData(color: Colors.white),
         backgroundColor: Colors.black,
         title: const Text('Asetukset', style: TextStyle(color: Colors.white)),
@@ -166,6 +162,7 @@ class _MySettingsPage extends State<MySettingsPage> {
                 // Add navigation logic for option 1 here
               },
             ),
+
             // Add more options as needed
             const ListTile(
               title: Text(
