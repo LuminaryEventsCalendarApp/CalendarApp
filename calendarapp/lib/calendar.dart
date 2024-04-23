@@ -181,6 +181,7 @@ class _CalendarState extends State<Calendar> {
                                   Text(
                                       'Tilauspituus päivinä: ${event.orderLengthDays}'),
                                   Text('Tilauspäättyy: ${event.orderEndDate}'),
+                                  Text('Contents: ${event.contents}'),
                                   SizedBox(height: 16),
                                 ],
                               ),
