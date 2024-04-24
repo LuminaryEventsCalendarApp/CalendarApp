@@ -1,7 +1,8 @@
+import 'package:calendarapp/home_page.dart';
 import 'package:flutter/material.dart';
 import 'calendar.dart';
 import 'inventory.dart';
-import 'new_orders.dart';
+
 
 void main() {
   runApp(const Settings());
@@ -62,7 +63,6 @@ class _MySettingsPage extends State<MySettingsPage> {
       Center(
         child: Text('Settings'),
       ),
-      Center(child: Text('Logout'))
     ];
 
     /// The currently selected index of the bar
@@ -146,21 +146,20 @@ class _MySettingsPage extends State<MySettingsPage> {
               },
             ),
             ListTile(
-              leading: const Icon(Icons.shopping_cart, color: Colors.white),
+              leading: const Icon(Icons.lock, color: Colors.white),
               title: const Text(
-                'Uudet tilaukset',
+                'Logout',
                 style: TextStyle(color: Colors.white),
               ),
               onTap: () {
                 Navigator.pop(context);
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => const New_orders()),
+                  MaterialPageRoute(builder: (context) => const HomePage()),
                 );
                 // Add navigation logic for option 1 here
               },
             ),
-
             // Add more options as needed
             const ListTile(
               title: Text(

@@ -1,6 +1,6 @@
 // ignore_for_file: unused_field, library_private_types_in_public_api, prefer_const_constructors
 
-import 'package:calendarapp/new_orders.dart';
+import 'package:calendarapp/home_page.dart';
 import 'package:flutter/material.dart';
 import 'package:table_calendar/table_calendar.dart';
 import 'settings.dart';
@@ -216,9 +216,9 @@ class _CalendarState extends State<Calendar> {
                     onPressed: null,
                     style: ButtonStyle(
                       minimumSize:
-                          MaterialStateProperty.all(const Size(125, 30)),
+                          MaterialStateProperty.all(const Size(200, 35)),
                       maximumSize:
-                          MaterialStateProperty.all(const Size(125, 30)),
+                          MaterialStateProperty.all(const Size(200, 35)),
                       shape: MaterialStateProperty.all(
                         RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(7),
@@ -320,16 +320,16 @@ class _CalendarState extends State<Calendar> {
               },
             ),
             ListTile(
-              leading: const Icon(Icons.shopping_cart, color: Colors.white),
+              leading: const Icon(Icons.lock, color: Colors.white),
               title: const Text(
-                'Uudet tilaukset',
+                'Logout',
                 style: TextStyle(color: Colors.white),
               ),
               onTap: () {
                 Navigator.pop(context);
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => const New_orders()),
+                  MaterialPageRoute(builder: (context) => const HomePage()),
                 );
                 // Add navigation logic for option 1 here
               },
