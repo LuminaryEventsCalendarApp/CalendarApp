@@ -79,7 +79,8 @@ class _LoginPageState extends State<LoginPage> {
     return Container(
       decoration: const BoxDecoration(
         image: DecorationImage(
-          image: AssetImage('assets/IMG_9742.JPG'), // Background image path
+          image: AssetImage('assets/IMG_9742.JPG'),
+          // Background image path
           fit: BoxFit.cover,
         ),
       ),
@@ -93,7 +94,7 @@ class _LoginPageState extends State<LoginPage> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  const SizedBox(height: 50),
+                  const SizedBox(height: 200),
                   // username
                   MyTextField(
                     controller: emailController,
@@ -130,6 +131,7 @@ class _LoginPageState extends State<LoginPage> {
                     icon: const Icon(Icons.fingerprint),
                     label: const Text("Authenticate"),
                   ),
+                  const SizedBox(height: 20),
                 ],
               ),
             ),
