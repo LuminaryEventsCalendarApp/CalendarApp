@@ -2,15 +2,13 @@ import 'package:flutter/material.dart';
 import 'calendar.dart';
 import 'settings.dart';
 import 'new_orders.dart';
-import 'package:http/http.dart' as http;
-import 'dart:convert';
 
 void main() {
   runApp(const Inventory());
 }
 
 class Inventory extends StatelessWidget {
-  const Inventory({Key? key}) : super(key: key);
+  const Inventory({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -21,7 +19,7 @@ class Inventory extends StatelessWidget {
 }
 
 class MyInventoryPage extends StatefulWidget {
-  const MyInventoryPage({Key? key}) : super(key: key);
+  const MyInventoryPage({super.key});
 
   @override
   _MyInventoryPageState createState() => _MyInventoryPageState();
@@ -159,7 +157,7 @@ class _MyInventoryPageState extends State<MyInventoryPage> {
                 // deleteDevice(device['device']);
                 Navigator.pop(context);
               },
-              child: Text('Poista laite'),
+              child: const Text('Poista laite'),
             ),
             // Add more options as needed
           ],
@@ -259,8 +257,8 @@ class _MyInventoryPageState extends State<MyInventoryPage> {
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Padding(
-            padding: const EdgeInsets.all(8.0),
+          const Padding(
+            padding: EdgeInsets.all(8.0),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
@@ -310,7 +308,7 @@ class _MyInventoryPageState extends State<MyInventoryPage> {
                                   ),
                                 ),
                                 IconButton(
-                                  icon: Icon(Icons.more_vert),
+                                  icon: const Icon(Icons.more_vert),
                                   onPressed: () {
                                     // Add your options action here
                                     // For example, you can show a bottom sheet or navigate to a details screen
@@ -340,8 +338,8 @@ class _MyInventoryPageState extends State<MyInventoryPage> {
           // Add new device action
           // Implement navigation to a screen where users can add new devices
         },
-        child: Icon(Icons.add),
         backgroundColor: Colors.blue,
+        child: const Icon(Icons.add),
       ),
     );
   }
@@ -356,26 +354,26 @@ class _MyInventoryPageState extends State<MyInventoryPage> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text('Lisää uusi laite'),
+          title: const Text('Lisää uusi laite'),
           content: SingleChildScrollView(
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
                 TextField(
                   controller: nameController,
-                  decoration: InputDecoration(labelText: 'Nimi'),
+                  decoration: const InputDecoration(labelText: 'Nimi'),
                 ),
                 TextField(
                   controller: descriptionController,
-                  decoration: InputDecoration(labelText: 'Kuvaus'),
+                  decoration: const InputDecoration(labelText: 'Kuvaus'),
                 ),
                 TextField(
                   controller: pricePerDayController,
-                  decoration: InputDecoration(labelText: 'Hinta per päivä'),
+                  decoration: const InputDecoration(labelText: 'Hinta per päivä'),
                 ),
                 TextField(
                   controller: quantityController,
-                  decoration: InputDecoration(labelText: 'Kappalemäärä'),
+                  decoration: const InputDecoration(labelText: 'Kappalemäärä'),
                 ),
               ],
             ),
@@ -385,7 +383,7 @@ class _MyInventoryPageState extends State<MyInventoryPage> {
               onPressed: () {
                 Navigator.of(context).pop();
               },
-              child: Text('Keskeytä'),
+              child: const Text('Keskeytä'),
             ),
             TextButton(
               onPressed: () {
@@ -400,7 +398,7 @@ class _MyInventoryPageState extends State<MyInventoryPage> {
                 // addDevice(newDevice);
                 Navigator.of(context).pop();
               },
-              child: Text('Lisää'),
+              child: const Text('Lisää'),
             ),
           ],
         );

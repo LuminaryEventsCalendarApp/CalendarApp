@@ -14,7 +14,7 @@ class Event {
   final int orderLengthDays;
   final String orderEndDate;
   final String customerName;
-  final List<Map<String, dynamic>> contents;
+  final List<String> contents;
 
   const Event({
     required this.title,
@@ -22,7 +22,7 @@ class Event {
     required this.orderLengthDays,
     required this.orderEndDate,
     required this.customerName,
-    this.contents = const [],
+    required this.contents,
   });
 
   @override
@@ -80,13 +80,14 @@ Future<void> fetchData() async {
         String? orderEndDate = item['order_end_date'];
         String? customerName = item['customer_name'];
         dynamic contentsData = item['contents'];
-        List<Map<String, dynamic>> contents = [];
+        List<String> contents = [];
 
         if (contentsData != null) {
           if (contentsData is List<dynamic>) {
             // Handle the case where contentsData is a list
-            contents = List<Map<String, dynamic>>.from(
-                contentsData.cast<Map<String, dynamic>>());
+            contents = contentsData
+                .map((content) => content['name'].toString())
+                .toList();
           } else {
             // Handle other scenarios, like if contentsData is a single map or other types
             // You can add custom logic here based on your requirements
@@ -137,7 +138,7 @@ void retrieveEventsForNext7Days() {
     if (kEvents.containsKey(day)) {
       final eventsForDay = kEvents[day]!;
       print('Events for $day:');
-      eventsForDay.forEach((event) {
+      for (var event in eventsForDay) {
         print('- ${event.title}');
         print('- Order Start Date: ${event.orderStartDate}');
         print('- Order Length Days: ${event.orderLengthDays}');
@@ -145,12 +146,9 @@ void retrieveEventsForNext7Days() {
         print('- Customer Name: ${event.customerName}');
         print('Contents:');
         for (var content in event.contents) {
-          print('- Name: ${content["name"]}');
-          print('  Description: ${content["description"]}');
-          print('  Price per day: ${content["price_per_day"]}');
-          print('  Count: ${content["count"]}');
+          print('- Name: $content');
         }
-      });
+      }
     }
   }
 }
@@ -161,7 +159,7 @@ final kLastDay = DateTime(kToday.year, kToday.month + 3, kToday.day);
 
 // Main app widget
 class MyApp extends StatelessWidget {
-  const MyApp({Key? key}) : super(key: key);
+  const MyApp({super.key});
 
   @override
   Widget build(BuildContext context) {
