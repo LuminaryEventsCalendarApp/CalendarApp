@@ -242,14 +242,14 @@ class _MyInventoryPageState extends State<MyInventoryPage> {
               },
             ),
             ListTile(
-              leading: const Icon(Icons.shopping_cart, color: Colors.white),
-              title: const Text('Uudet tilaukset',
+              leading: const Icon(Icons.lock, color: Colors.white),
+              title: const Text('Kirjautuminen',
                   style: TextStyle(color: Colors.white)),
               onTap: () {
                 Navigator.pop(context);
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => const HomePage()),
+                  MaterialPageRoute(builder: (context) => HomePage()),
                 );
               },
             ),

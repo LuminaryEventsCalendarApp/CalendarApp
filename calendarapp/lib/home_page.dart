@@ -1,22 +1,51 @@
+import 'package:calendarapp/login_page.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
-class HomePage extends StatelessWidget {
-  const HomePage({super.key});
+class MyApp extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return const MaterialApp();
+  }
+}
 
-  void signUserOut() {
-    FirebaseAuth.instance.signOut();
+class HomePage extends StatelessWidget {
+  final FirebaseAuth _auth = FirebaseAuth.instance;
+
+  Future<void> _signOut(BuildContext context) async {
+    try {
+      await _auth.signOut();
+      print("User signed out successfully");
+
+      Navigator.pop(context);
+      Navigator.push(
+          context, MaterialPageRoute(builder: (context) => LoginPage()));
+    } catch (e) {
+      print("Error signing out: $e");
+    }
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        actions: [
-          IconButton(onPressed: signUserOut, icon: const Icon(Icons.logout))
-        ],
+        title: Text('Ulos Kirjautuminen'),
       ),
-      body: const Center(child: Text("Logged In")),
+      body: Container(
+        decoration: const BoxDecoration(
+          image: DecorationImage(
+            image:
+                AssetImage('assets/IMG_9742.JPG'), // Change path to your image
+            fit: BoxFit.cover,
+          ),
+        ),
+        child: Center(
+          child: ElevatedButton(
+            onPressed: () => _signOut(context),
+            child: Text('Logout'),
+          ),
+        ),
+      ),
     );
   }
 }

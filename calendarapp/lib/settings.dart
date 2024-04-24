@@ -102,6 +102,7 @@ class _MySettingsPage extends State<MySettingsPage> {
                 ),
               ),
             ),
+
             ListTile(
               leading: const Icon(Icons.calendar_today, color: Colors.white),
               title: const Text(
@@ -148,14 +149,14 @@ class _MySettingsPage extends State<MySettingsPage> {
             ListTile(
               leading: const Icon(Icons.lock, color: Colors.white),
               title: const Text(
-                'Logout',
+                'Kirjautuminen',
                 style: TextStyle(color: Colors.white),
               ),
               onTap: () {
                 Navigator.pop(context);
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => const HomePage()),
+                  MaterialPageRoute(builder: (context) => HomePage()),
                 );
                 // Add navigation logic for option 1 here
               },
