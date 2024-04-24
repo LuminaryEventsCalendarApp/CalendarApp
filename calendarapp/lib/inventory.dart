@@ -2,24 +2,26 @@ import 'package:flutter/material.dart';
 import 'calendar.dart';
 import 'settings.dart';
 import 'new_orders.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
 
 void main() {
   runApp(const Inventory());
 }
 
 class Inventory extends StatelessWidget {
-  const Inventory({super.key});
+  const Inventory({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return const MaterialApp(
-      home: MyInventoryPage(), // Use MyInventoryPage as the home
+      home: MyInventoryPage(), 
     );
   }
 }
 
 class MyInventoryPage extends StatefulWidget {
-  const MyInventoryPage({super.key});
+  const MyInventoryPage({Key? key}) : super(key: key);
 
   @override
   _MyInventoryPageState createState() => _MyInventoryPageState();
@@ -28,6 +30,8 @@ class MyInventoryPage extends StatefulWidget {
 class _MyInventoryPageState extends State<MyInventoryPage> {
   List<Map<String, dynamic>>? devices;
 
+// Nämä on testilaitteita, joilla voidaan kokeilla datan hakemista ilman tietokantaa.
+/*
   @override
   void initState() {
     super.initState();
@@ -36,20 +40,28 @@ class _MyInventoryPageState extends State<MyInventoryPage> {
 
   void initializeExampleDevices() {
     devices = [
-      {
-        'name': 'Device 1',
-        'quantity': 10,
-        'description': 'Description of Device 1'
-      },
-      {
-        'name': 'Device 2',
-        'quantity': 5,
-        'description': 'Description of Device 2'
-      },
+      {'name': 'Laite 1',
+       'current_stock': 10,
+       'total_stock': 10,
+        'description': 'Description of Device 1',
+        'price_per_day': 44,
+        'type': 'Lavatekniikka'
+        },
+
+      {'name': 'Laite 1',
+      'current_stock': 10,
+       'total_stock': 10,
+        'description': 'Description of Device 1',
+        'price_per_day': 44,
+        'type': 'Lavatekniikka'
+        },
+        
+        
     ];
   }
+*/
 
-  /*
+  
 //Hakee laitteet databasesta
   Future<void> fetchData() async {
     try {
@@ -62,8 +74,10 @@ class _MyInventoryPageState extends State<MyInventoryPage> {
               'device' : device['id'],
               'name': device['name'],
               'total_stock': device['total_stock'],
+              'current_stock' : device['current_stock'],
               'description' : device ['description'],
               'price_per_day' : device['price_per_day'],
+              'type' : device['type']
             };
           }));
         });
@@ -89,6 +103,7 @@ class _MyInventoryPageState extends State<MyInventoryPage> {
     fetchData();
   }
   
+  
     //poistaa laitteen tietokannasta
     
      Future<void> deleteDevice(int deviceId) async {
@@ -111,7 +126,7 @@ class _MyInventoryPageState extends State<MyInventoryPage> {
   }
   //Lisää laitteen tietokantaan
   Future<void> addDevice(Map<String, dynamic> newDevice) async {
-  final url = Uri.parse(''); // Replace this empty string with the actual URL of your API endpoint
+  final url = Uri.parse(''); // 
   try {
     final response = await http.post(
       url,
@@ -122,7 +137,8 @@ class _MyInventoryPageState extends State<MyInventoryPage> {
         'name': newDevice['name'],
         'description': newDevice['description'],
         'price_per_day': newDevice['price_per_day'],
-        'total_stock': newDevice['total_stock'], 
+        'total_stock': newDevice['total_stock'],
+        'type' : newDevice['type'], 
       }),
     );
     if (response.statusCode == 201) {
@@ -139,7 +155,8 @@ class _MyInventoryPageState extends State<MyInventoryPage> {
     print('Error adding device: $e');
   }
 }
-*/
+
+
   //Asetukset toiminto laitteille
   void _showOptionsDialog(BuildContext context, Map<String, dynamic> device) {
     showDialog(
@@ -151,15 +168,14 @@ class _MyInventoryPageState extends State<MyInventoryPage> {
           actions: <Widget>[
             TextButton(
               onPressed: () {
-                // Add your option action here
-                // For example, you can delete the device
-                // Delete device
-                // deleteDevice(device['device']);
+               
+                // Poistaa laitteen
+                 deleteDevice(device['device']);
                 Navigator.pop(context);
               },
               child: const Text('Poista laite'),
             ),
-            // Add more options as needed
+            
           ],
         );
       },
@@ -184,7 +200,7 @@ class _MyInventoryPageState extends State<MyInventoryPage> {
               decoration: BoxDecoration(
                 image: DecorationImage(
                   image: AssetImage(
-                      'assets/luminaryevents.png'), // Your background image
+                      'assets/luminaryevents.png'), // Navigoinnin kuva
                   fit: BoxFit.cover,
                 ),
               ),
@@ -213,7 +229,7 @@ class _MyInventoryPageState extends State<MyInventoryPage> {
                   style: TextStyle(color: Colors.white)),
               onTap: () {
                 Navigator.pop(context);
-                // No need to navigate to Inventory screen again since we're already on it
+                
               },
             ),
             ListTile(
@@ -240,7 +256,7 @@ class _MyInventoryPageState extends State<MyInventoryPage> {
                 );
               },
             ),
-            // Add more options as needed
+            
             const ListTile(
               title: Text(
                 '© 2024 Luminary Events',
@@ -254,155 +270,162 @@ class _MyInventoryPageState extends State<MyInventoryPage> {
           ],
         ),
       ),
-      body: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          const Padding(
-            padding: EdgeInsets.all(8.0),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text('Kalusto', style: TextStyle(fontWeight: FontWeight.bold)),
-                Spacer(), // Add Spacer widget here
-                Text('Kappalemäärä',
-                    style: TextStyle(fontWeight: FontWeight.bold)),
-              ],
+       body: devices != null
+          ? Container(
+        height: MediaQuery.of(context).size.height,
+        width: MediaQuery.of(context).size.width,
+        child: SingleChildScrollView(
+          child: FittedBox(
+            fit: BoxFit.contain,
+            child: DataTable(
+                  columnSpacing: 16.0,
+                  dataRowMinHeight: 56.0,
+                  dataRowMaxHeight: 56.0,
+                  columns: const [
+                    DataColumn(label: Text('Nimi')),
+                    DataColumn(label: Text('Kuvaus')),
+                    DataColumn(label: Text('Tyyppi')),
+                    DataColumn(label: Text('Hinta/Päivä')),
+                    DataColumn(label: Text('Saatavilla')),
+                    DataColumn(label: Text('Yhteensä')),
+                    DataColumn(label: Text('Toiminnot')),
+                  ],
+                  rows: devices!.map((device) {
+                    return DataRow(
+                      cells: [
+                        DataCell(Container(
+                          alignment: Alignment.center,
+                          child: Text(device['name'].toString()),
+                        )),
+                        DataCell(Container(
+                          alignment: Alignment.center,
+                          child: Text(device['description'] != null ? '${device['description']}' : 'NULL'),
+                        )),
+                        DataCell(Container(
+                          alignment: Alignment.center,
+                          child: Text(device['type'] != null ? '${device['type']}' : 'NULL'),
+                        )),
+                        DataCell(Container(
+                          alignment: Alignment.center,
+                          child: Text(device['price_per_day'] != null ? '${device['price_per_day']}€' : 'NULL '),
+                        )),
+                        DataCell(Container(
+                          alignment: Alignment.center,
+                          child: Text(device['current_stock'] != null ? '${device['current_stock']}' : 'NULL'),
+                        )),
+                        DataCell(Container(
+                          alignment: Alignment.center,
+                          child: Text(device['total_stock'] != null ? '${device['total_stock']}' : 'NULL'),
+                        )),
+                        DataCell(IconButton(
+                          icon: const Icon(Icons.more_vert),
+                          onPressed: () {
+                            _showOptionsDialog(context, device);
+                          },
+                    )),
+                  ],
+                );
+              }).toList(),
             ),
           ),
-          Expanded(
-            child: Container(
-              color: const Color.fromARGB(255, 100, 99, 99),
-              child: devices != null
-                  ? ListView.builder(
-                      itemCount: devices!.length,
-                      itemBuilder: (BuildContext context, int index) {
-                        final device = devices![index];
-                        return Container(
-                          margin: const EdgeInsets.all(8.0),
-                          decoration: BoxDecoration(
-                            color: Colors.white,
-                            border: Border.all(
-                                color: const Color.fromARGB(255, 0, 0, 0)),
-                            borderRadius: BorderRadius.circular(8.0),
-                          ),
-                          child: ListTile(
-                            title: Text(device['name']),
-                            subtitle: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(device['description'] != null
-                                    ? '${device['description']}'
-                                    : 'NULL'),
-                              ],
-                            ),
-                            trailing: Row(
-                              mainAxisSize: MainAxisSize.min,
-                              children: [
-                                Text(
-                                  (device['total_stock'] != null
-                                      ? '${device['total_stock']}'
-                                      : 'NULL'),
-                                  style: const TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 18,
-                                  ),
-                                ),
-                                IconButton(
-                                  icon: const Icon(Icons.more_vert),
-                                  onPressed: () {
-                                    // Add your options action here
-                                    // For example, you can show a bottom sheet or navigate to a details screen
-                                    _showOptionsDialog(context, device);
-                                  },
-                                ),
-                              ],
-                            ),
-                          ),
-                        );
-                      },
-                    )
-                  : devices == null
-                      ? const Center(
-                          child: CircularProgressIndicator(),
-                        )
-                      : const Center(
-                          child: Text('Failed to fetch data'),
-                        ),
-            ),
-          ),
-        ],
-      ),
+        ),
+      )
+          : devices == null
+              ? const Center(
+                  child: CircularProgressIndicator(),
+                )
+              : const Center(
+                  child: Text('Failed to fetch data'),
+                ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           _showAddDeviceDialog(context);
-          // Add new device action
-          // Implement navigation to a screen where users can add new devices
         },
         backgroundColor: Colors.blue,
         child: const Icon(Icons.add),
+        
       ),
     );
   }
 
   Future<void> _showAddDeviceDialog(BuildContext context) async {
-    final TextEditingController nameController = TextEditingController();
-    final TextEditingController descriptionController = TextEditingController();
-    final TextEditingController pricePerDayController = TextEditingController();
-    final TextEditingController quantityController = TextEditingController();
+  final TextEditingController nameController = TextEditingController();
+  final TextEditingController descriptionController = TextEditingController();
+  final TextEditingController pricePerDayController = TextEditingController();
+  final TextEditingController quantityController = TextEditingController();
 
-    await showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: const Text('Lisää uusi laite'),
-          content: SingleChildScrollView(
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                TextField(
-                  controller: nameController,
-                  decoration: const InputDecoration(labelText: 'Nimi'),
-                ),
-                TextField(
-                  controller: descriptionController,
-                  decoration: const InputDecoration(labelText: 'Kuvaus'),
-                ),
-                TextField(
-                  controller: pricePerDayController,
-                  decoration: const InputDecoration(labelText: 'Hinta per päivä'),
-                ),
-                TextField(
-                  controller: quantityController,
-                  decoration: const InputDecoration(labelText: 'Kappalemäärä'),
-                ),
-              ],
-            ),
+  String selectedType = 'kokoääni'; 
+
+  await showDialog(
+    context: context,
+    builder: (BuildContext context) {
+      return AlertDialog(
+        title: const Text('Lisää uusi laite'),
+        content: SingleChildScrollView(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              TextField(
+                controller: nameController,
+                decoration: const InputDecoration(labelText: 'Nimi'),
+              ),
+              TextField(
+                controller: descriptionController,
+                decoration: const InputDecoration(labelText: 'Kuvaus'),
+              ),
+              TextField(
+                controller: pricePerDayController,
+                decoration: const InputDecoration(labelText: 'Hinta per päivä'),
+              ),
+              DropdownButtonFormField<String>(
+                value: selectedType,
+                onChanged: (String? newValue) {
+                  setState(() {
+                    selectedType = newValue!;
+                  });
+                },
+                items: <String>['kokoääni', 'sub', 'dj', 'lavatekniikka']
+                    .map<DropdownMenuItem<String>>((String value) {
+                  return DropdownMenuItem<String>(
+                    value: value,
+                    child: Text(value),
+                  );
+                }).toList(),
+                decoration: const InputDecoration(labelText: 'Tyyppi'),
+              ),
+              TextField(
+                controller: quantityController,
+                decoration: const InputDecoration(labelText: 'Kappalemäärä'),
+              ),
+              
+            ],
           ),
-          actions: <Widget>[
-            TextButton(
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-              child: const Text('Keskeytä'),
-            ),
-            TextButton(
-              onPressed: () {
-                final newDevice = {
-                  'name': nameController.text,
-                  'description': descriptionController.text,
-                  'price_per_day':
-                      double.tryParse(pricePerDayController.text) ?? 0.0,
-                  'total_stock': int.tryParse(quantityController.text) ?? 0,
-                };
-                // Add the new device
-                // addDevice(newDevice);
-                Navigator.of(context).pop();
-              },
-              child: const Text('Lisää'),
-            ),
-          ],
-        );
-      },
-    );
-  }
+        ),
+        actions: <Widget>[
+          TextButton(
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
+            child: const Text('Keskeytä'),
+          ),
+          TextButton(
+            onPressed: () {
+              final newDevice = {
+                'name': nameController.text,
+                'description': descriptionController.text,
+                'price_per_day': double.tryParse(pricePerDayController.text) ?? 0.0,
+                'total_stock': int.tryParse(quantityController.text) ?? 0,
+                'type': selectedType, 
+              };
+              // Lisää uuden laitteen
+              addDevice(newDevice);
+              Navigator.of(context).pop();
+            },
+            child: const Text('Lisää'),
+          ),
+        ],
+      );
+    },
+  );
+}
 }
