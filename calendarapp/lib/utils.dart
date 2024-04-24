@@ -52,7 +52,7 @@ List<DateTime> daysInRange(DateTime first, DateTime last) {
 Future<Map<String, dynamic>> fetchMapData(DateTime selectedDay) async {
   try {
     var response = await http.get(
-      Uri.parse('https://mekelektro.com/orders?date=${selectedDay.toString()}'),
+      Uri.parse('Placeholder${selectedDay.toString()}'),
     );
 
     if (response.statusCode == 200) {
@@ -69,8 +69,7 @@ Future<Map<String, dynamic>> fetchMapData(DateTime selectedDay) async {
 // Function to fetch event data
 Future<void> fetchData() async {
   try {
-    var response =
-        await http.get(Uri.parse('https://mekelektro.com/orders?date='));
+    var response = await http.get(Uri.parse('Placeholder'));
     if (response.statusCode == 200) {
       List<dynamic> data = json.decode(response.body);
       kEvents.clear();
