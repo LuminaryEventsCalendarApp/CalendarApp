@@ -8,7 +8,7 @@ import 'inventory.dart';
 import '../utils.dart';
 
 class Calendar extends StatefulWidget {
-  const Calendar({Key? key}) : super(key: key);
+  const Calendar({super.key});
 
   @override
   _CalendarState createState() => _CalendarState();
@@ -35,11 +35,11 @@ class _CalendarState extends State<Calendar> {
       child: Text('Settings'),
     ),
   ];
-  TextEditingController _textFieldController = TextEditingController();
+  //This is the controller used to edit the new events text field
+  final TextEditingController _textFieldController = TextEditingController();
   @override
   void initState() {
     super.initState();
-
     _selectedDay = _focusedDay;
     _selectedEvents = ValueNotifier(_getEventsForDay(_selectedDay!));
   }
@@ -57,14 +57,16 @@ class _CalendarState extends State<Calendar> {
   }
 
   List<Event> _getEventsForRange(DateTime start, DateTime end) {
-    // Implementation example
-    final days = daysInRange(start, end);
-
-    return [
-      for (final d in days) ..._getEventsForDay(d),
-    ];
+    List<Event> events = [];
+    for (DateTime date = start;
+        date.isBefore(end);
+        date = date.add(Duration(days: 1))) {
+      events.addAll(_getEventsForDay(date));
+    }
+    return events;
   }
 
+  //Function to highlight the selected day in the calendar
   void _onDaySelected(DateTime selectedDay, DateTime focusedDay) {
     if (!isSameDay(_selectedDay, selectedDay)) {
       setState(() {
@@ -78,7 +80,7 @@ class _CalendarState extends State<Calendar> {
       // Retrieve events for the selected day
       List<Event> eventsForSelectedDay = _getEventsForDay(selectedDay);
 
-      // Customize the content of the dialog with the events for the selected day
+      //Showcasing the event data in a dialog box
       showDialog(
         context: context,
         builder: (BuildContext context) {
@@ -91,7 +93,7 @@ class _CalendarState extends State<Calendar> {
               mainAxisSize: MainAxisSize.min,
               children: [
                 Text(
-                  'You selected the date ${selectedDay.day}/${selectedDay.month}.', // Customize the dialog content here
+                  'You selected the date ${selectedDay.day}/${selectedDay.month}.',
                 ),
                 SizedBox(height: 16),
                 Text(
@@ -153,11 +155,11 @@ class _CalendarState extends State<Calendar> {
         );
         for (final event in eventsForDay) {
           DateTime selectedDay = day;
-          nextSevenDaysEvents.add(Padding(
+          nextSevenDaysEvents.add(
+            Padding(
               padding: const EdgeInsets.symmetric(vertical: 8),
               child: GestureDetector(
                 onTap: () {
-                  // Show dialog with detailed event information
                   showDialog(
                     context: context,
                     builder: (BuildContext context) {
@@ -171,27 +173,29 @@ class _CalendarState extends State<Calendar> {
                             Text(
                                 'Tapahtumat päivänä ${selectedDay.day}/${selectedDay.month}:'),
                             SizedBox(height: 16),
-                            for (final event in eventsForDay)
-                              Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text('Tapahtuman nimi: ${event.title}'),
-                                  Text('Asiakas: ${event.customerName}'),
-                                  Text('Tilauspäivä: ${event.orderStartDate}'),
-                                  Text(
-                                      'Tilauspituus päivinä: ${event.orderLengthDays}'),
-                                  Text('Tilauspäättyy: ${event.orderEndDate}'),
-                                  Text('Contents: ${event.contents}'),
-                                  SizedBox(height: 16),
-                                ],
-                              ),
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text('Tapahtuman nimi: ${event.title}'),
+                                Text('Asiakas: ${event.customerName}'),
+                                Text('Tilauspäivä: ${event.orderStartDate}'),
+                                Text(
+                                    'Tilauspituus päivinä: ${event.orderLengthDays}'),
+                                Text('Tilauspäättyy: ${event.orderEndDate}'),
+                                Text('Contents:'),
+                                for (var content in event.contents)
+                                  Text('- Name: $content',
+                                      style: TextStyle(fontSize: 10)),
+                                SizedBox(height: 16),
+                              ],
+                            ),
                             ElevatedButton(
                               onPressed: () {
-                                _deleteEventsForDay(selectedDay);
+                                _deleteEvent(selectedDay, event);
                                 Navigator.of(context).pop();
                               },
                               child: const Text('Poista tapahtuma'),
-                            )
+                            ),
                           ],
                         ),
                         actions: <Widget>[
@@ -212,9 +216,9 @@ class _CalendarState extends State<Calendar> {
                     onPressed: null,
                     style: ButtonStyle(
                       minimumSize:
-                          MaterialStateProperty.all(const Size(200, 30)),
+                          MaterialStateProperty.all(const Size(125, 30)),
                       maximumSize:
-                          MaterialStateProperty.all(const Size(200, 30)),
+                          MaterialStateProperty.all(const Size(125, 30)),
                       shape: MaterialStateProperty.all(
                         RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(7),
@@ -222,7 +226,7 @@ class _CalendarState extends State<Calendar> {
                         ),
                       ),
                       padding: MaterialStateProperty.all(
-                        const EdgeInsets.symmetric(vertical: 1, horizontal: 1),
+                        const EdgeInsets.symmetric(vertical: 5, horizontal: 5),
                       ),
                       backgroundColor: MaterialStateProperty.all(Colors.white),
                       textStyle: MaterialStateProperty.all(
@@ -230,12 +234,16 @@ class _CalendarState extends State<Calendar> {
                             fontWeight: FontWeight.bold, color: Colors.black),
                       ),
                     ),
-                    child: Text(event.title,
-                        style: const TextStyle(
-                            fontWeight: FontWeight.bold, color: Colors.black)),
+                    child: Text(
+                      event.title,
+                      style: const TextStyle(
+                          fontWeight: FontWeight.bold, color: Colors.black),
+                    ),
                   ),
                 ),
-              )));
+              ),
+            ),
+          );
         }
       }
     }
@@ -430,9 +438,9 @@ class _CalendarState extends State<Calendar> {
     );
   }
 
-  void _deleteEventsForDay(DateTime day) {
+  void _deleteEvent(DateTime day, Event event) {
     setState(() {
-      kEvents.remove(day);
+      kEvents[day]?.remove(event);
     });
   }
 
@@ -447,15 +455,17 @@ class _CalendarState extends State<Calendar> {
           title: '',
           orderStartDate: '',
           orderLengthDays: 0,
-          orderEndDate: ''));
+          orderEndDate: '',
+          contents: []));
     } else {
       kEvents[selectedDate] = [
         Event(
             customerName: '',
             title: '',
-            orderEndDate: '',
             orderStartDate: '',
-            orderLengthDays: 0)
+            orderLengthDays: 0,
+            orderEndDate: '',
+            contents: [])
       ];
     }
 

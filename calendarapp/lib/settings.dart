@@ -1,9 +1,7 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'calendar.dart';
 import 'inventory.dart';
 import 'new_orders.dart';
-import 'home_page.dart';
 
 void main() {
   runApp(const Settings());
